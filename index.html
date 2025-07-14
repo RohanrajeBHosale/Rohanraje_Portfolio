@@ -137,15 +137,54 @@
             align-self: flex-end; border-bottom-right-radius: 4px;
         }
         .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
-        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); }
+
+        /* UPDATED: Input area styles */
+        .chat-input-area {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid var(--border-color);
+            background-color: rgba(17, 17, 17, 0.9);
+            align-items: center;
+        }
         #chat-input {
             flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color);
             border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
         }
-        .chat-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; width: 40px; transition: color 0.3s; }
+        .chat-btn {
+            background: none; border: none; color: var(--subtle-text-color);
+            font-size: 20px; cursor: pointer; width: 44px; height: 44px;
+            transition: color 0.3s;
+            display: flex; align-items: center; justify-content: center;
+        }
         .chat-btn:hover { color: var(--accent-color); }
-        #mic-btn.listening { color: var(--chatbot-accent-color); animation: pulse 1.5s infinite; }
+
+        /* NEW: Button visibility logic */
+        .chat-btn.hidden { display: none !important; }
+
+        /* By default, hide the send button */
+        .chat-input-area:not(.typing) #send-btn { display: none; }
+        /* When typing, hide the mic button and show send button */
+        .chat-input-area.typing #mic-btn { display: none; }
+        .chat-input-area.typing #send-btn { display: flex; }
+
+        /* When bot is speaking, hide mic/send and show stop */
+        .chat-input-area.bot-speaking #mic-btn,
+        .chat-input-area.bot-speaking #send-btn { display: none; }
+        .chat-input-area.bot-speaking #stop-btn { display: flex; }
+        .chat-input-area:not(.bot-speaking) #stop-btn { display: none; }
+
+        /* Mic listening styles */
+        #mic-btn.listening {
+            color: var(--chatbot-accent-color);
+            animation: pulse 1.5s infinite;
+        }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+        /* NEW: Input field highlight when listening */
+        .chat-input-area.mic-active #chat-input {
+            border-color: var(--chatbot-accent-color);
+            box-shadow: 0 0 5px var(--glow-color);
+        }
 
         @media (max-width: 768px) {
             .header-content h1 { font-size: 2.5rem; }
@@ -314,9 +353,7 @@
 
 <div class="floating-prompt" id="floating-prompt">
     <span>Interview me here</span>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M13.1717 12.0001L8.22192 7.05029L9.63614 5.63608L16.0001 12.0001L9.63614 18.364L8.22192 16.9498L13.1717 12.0001Z"></path>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.1717 12.0001L8.22192 7.05029L9.63614 5.63608L16.0001 12.0001L9.63614 18.364L8.22192 16.9498L13.1717 12.0001Z"></path></svg>
 </div>
 
 <div class="chatbot-fab" id="chatbot-fab">
@@ -329,16 +366,17 @@
         <button class="chat-close-btn" id="chat-close-btn">×</button>
     </div>
     <div class="chat-messages" id="chat-messages"></div>
-    <div class="chat-input-area">
+    <div class="chat-input-area" id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Ask or press the mic...">
         <button class="chat-btn" id="mic-btn"><i class="fas fa-microphone"></i></button>
-        <input type="text" id="chat-input" placeholder="Ask about LLMs, AWS, projects...">
         <button class="chat-btn" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        <button class="chat-btn hidden" id="stop-btn"><i class="fas fa-stop-circle"></i></button>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
-<!-- ======================= UPDATED SCRIPT BLOCK ======================= -->
+<!-- ======================= FINAL SCRIPT BLOCK WITH ALL UX UPGRADES ======================= -->
 <script>
     // --- SCROLL REVEAL ANIMATION ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -379,40 +417,81 @@
 
     // --- CHATBOT LOGIC ---
     document.addEventListener('DOMContentLoaded', () => {
+        // --- Element selection ---
         const chatbotFab = document.getElementById('chatbot-fab');
         const chatWindow = document.getElementById('chat-window');
         const closeBtn = document.getElementById('chat-close-btn');
+        const chatInputArea = document.getElementById('chat-input-area');
+        const chatInput = document.getElementById('chat-input');
         const sendBtn = document.getElementById('send-btn');
         const micBtn = document.getElementById('mic-btn');
-        const chatInput = document.getElementById('chat-input');
+        const stopBtn = document.getElementById('stop-btn');
         const chatMessages = document.getElementById('chat-messages');
         const floatingPrompt = document.getElementById('floating-prompt');
 
-        chatbotFab.addEventListener('click', () => {
+        let currentAudio = null; // Holds the currently playing audio element
+
+        // --- Event Listeners ---
+        chatbotFab.addEventListener('click', openChat);
+        closeBtn.addEventListener('click', closeChat);
+        sendBtn.addEventListener('click', handleUserInput);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleUserInput(); } });
+        chatInput.addEventListener('input', handleTyping);
+        stopBtn.addEventListener('click', stopBotSpeaking);
+
+        function openChat() {
             chatWindow.style.display = 'flex';
             floatingPrompt.classList.add('hidden');
             if (chatMessages.children.length === 0) {
-                addBotMessage("Hello. I am ROHbot, a custom AI trained on Rohan's portfolio. You can ask me about his skills in Agentic AI, his projects with cloud platforms like AWS, or his experience with LLMs. How can I help?");
+                addBotMessage("Hello. I am ROHbot, a custom AI assistant for Rohan. You can ask me anything about his skills or projects. How can I help?");
             }
-        });
+        }
 
-        closeBtn.addEventListener('click', () => {
+        function closeChat() {
+            stopBotSpeaking(); // Stop any audio if chat is closed
             chatWindow.style.display = 'none';
             floatingPrompt.classList.remove('hidden');
-        });
+        }
 
-        sendBtn.addEventListener('click', handleUserInput);
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserInput(); });
+        function handleTyping() {
+            if (chatInput.value.length > 0) {
+                chatInputArea.classList.add('typing');
+            } else {
+                chatInputArea.classList.remove('typing');
+            }
+        }
 
         function handleUserInput() {
             const userText = chatInput.value.trim();
             if (!userText) return;
             addUserMessage(userText);
             chatInput.value = '';
-            setTimeout(() => {
-                const botResponse = findBotResponse(userText);
-                addBotMessage(botResponse);
-            }, 500);
+            handleTyping(); // Reset button visibility
+            getGeminiResponse(userText);
+        }
+
+        function getGeminiResponse(userText) {
+            const thinkingMessage = document.createElement('div');
+            thinkingMessage.className = 'chat-message bot';
+            thinkingMessage.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            chatMessages.appendChild(thinkingMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            fetch('https://rohbot.vercel.app/api/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userInput: userText }),
+            })
+                .then(response => response.ok ? response.json() : Promise.reject(response))
+                .then(data => {
+                    thinkingMessage.remove();
+                    addBotMessage(data.reply);
+                })
+                .catch(error => {
+                    console.error('Error fetching from chat API:', error);
+                    thinkingMessage.remove();
+                    addBotMessage("I'm having a little trouble connecting to my core logic right now. Please try again in a moment.");
+                });
         }
 
         function addUserMessage(text) {
@@ -429,94 +508,90 @@
             messageEl.textContent = text;
             chatMessages.appendChild(messageEl);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-            speakText(text); // This function is now updated
+            speakText(text);
         }
 
-        const knowledgeBase = {
-            'greeting': { keywords: ['hello', 'hi', 'hey'], response: "Hello! I'm ready to answer your questions about Rohan's qualifications. What technical area interests you most?" },
-            'capability': { keywords: ['capability', 'approach', 'fit', 'why him'], response: "Rohan's key capability is bridging the gap between complex AI theory and practical, scalable solutions. He has hands-on experience building end-to-end systems, like his Agentic AI project, which demonstrates his ability to architect and deploy multi-step, intelligent applications." },
-            'foundation_models': { keywords: ['foundation model', 'llm', 'large language', 'rag', 'gpt', 'crewai', 'langchain', 'agentic'], response: "Rohan has extensive, hands-on experience with foundation models. He has built agentic systems using frameworks like LangChain, LangGraph, and CrewAI with models like GPT-4. His projects showcase a deep understanding of Retrieval-Augmented Generation (RAG) using vector databases like ChromaDB and FAISS to ground models in external knowledge." },
-            'cloud_aws': { keywords: ['cloud', 'aws', 'azure', 'gcp', 's3', 'glue', 'lambda'], response: "He is proficient with multiple cloud platforms, with a strong focus on AWS. His skills include core services like S3 for storage, Lambda for serverless compute, and a full data engineering stack with Glue for ETL, Athena for querying, and Redshift for data warehousing. This demonstrates his ability to build and manage data solutions in a cloud-native environment." },
-            'python_sql': { keywords: ['python', 'sql'], response: "He is highly proficient in both. Python is his primary language for AI/ML, using it with libraries like PyTorch, TensorFlow, and LangChain. His SQL expertise is robust, covering everything from complex queries to database design, as demonstrated in his academic teaching and projects involving BigQuery and PostgreSQL." },
-            'large_scale_data': { keywords: ['large scale', 'spark', 'big data', 'processing', 'etl'], response: "Yes, Rohan is equipped to handle large-scale data. His skill set includes key big data technologies like Apache Spark and cloud-native ETL tools such as AWS Glue. This experience, combined with his work on distributed databases like Redshift and BigQuery, shows he can architect and execute data pipelines for massive datasets." },
-            'production_shipping': { keywords: ['production', 'shipping', 'deploy', 'end-to-end'], response: "He has built and deployed several end-to-end systems that demonstrate his proficiency in creating scalable and reliable solutions. For example, his AI market intelligence agent was designed for continuous data processing, and his skin cancer detection framework handled the full ML lifecycle. He is focused on building production-grade AI." },
-            'contact': { keywords: ['contact', 'email', 'phone', 'linkedin'], response: "You can reach Rohan via email at therohanrajebhosale@gmail.com, or find him on LinkedIn. His contact details are also at the top of this page." },
-            'default': { response: "That's an interesting question. It highlights the complexity of modern AI systems. Based on Rohan's projects, his approach would likely involve breaking the problem down, leveraging a powerful framework like LangChain or PyTorch, and ensuring the data pipeline is robust. Could I tell you more about a specific project?" }
-        };
-
-        function findBotResponse(userInput) {
-            const lowerInput = userInput.toLowerCase();
-            for (const key in knowledgeBase) {
-                if (key !== 'default' && knowledgeBase[key].keywords.some(k => lowerInput.includes(k))) {
-                    return knowledgeBase[key].response;
-                }
+        function stopBotSpeaking() {
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.src = '';
+                currentAudio = null;
             }
-            return knowledgeBase.default.response;
+            chatInputArea.classList.remove('bot-speaking');
         }
 
-        // --- UPDATED: This function now calls your backend API ---
         function speakText(text) {
-            // <<< THIS IS THE CORRECTED LINE
-            const backendUrl = 'https://rohbot.vercel.app/api/tts';
+            stopBotSpeaking();
+            chatInputArea.classList.add('bot-speaking');
 
+            const backendUrl = 'https://rohbot.vercel.app/api/tts';
             fetch(backendUrl, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ text: text }),
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('API request failed. Falling back to default voice.');
-                    }
-                    return response.blob();
-                })
+                .then(response => response.ok ? response.blob() : Promise.reject(response))
                 .then(audioBlob => {
                     const audioUrl = URL.createObjectURL(audioBlob);
-                    const audio = new Audio(audioUrl);
-                    audio.play();
-
-                    audio.onended = () => {
+                    currentAudio = new Audio(audioUrl);
+                    currentAudio.play();
+                    currentAudio.onended = () => {
                         URL.revokeObjectURL(audioUrl);
+                        currentAudio = null;
+                        chatInputArea.classList.remove('bot-speaking');
+                        if (chatWindow.style.display === 'flex') {
+                            micBtn.click();
+                        }
                     };
                 })
                 .catch(error => {
                     console.error('Custom voice error:', error);
-                    console.log('Using default browser voice as a fallback.');
-
-                    window.speechSynthesis.cancel();
+                    chatInputArea.classList.remove('bot-speaking');
                     const utterance = new SpeechSynthesisUtterance(text);
                     utterance.lang = 'en-US';
                     window.speechSynthesis.speak(utterance);
                 });
         }
 
-        // --- This section for voice input (microphone) remains the same ---
+        // --- Voice Input (Speech Recognition) Logic ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = SpeechRecognition ? new SpeechRecognition() : null;
         if (recognition) {
             recognition.continuous = false;
             recognition.lang = 'en-US';
+
             micBtn.addEventListener('click', () => {
-                if (micBtn.classList.contains('listening')) { recognition.stop(); } else { recognition.start(); }
+                stopBotSpeaking();
+                if (micBtn.classList.contains('listening')) {
+                    recognition.stop();
+                } else {
+                    try { recognition.start(); } catch (e) { console.error("Recognition start error:", e); }
+                }
             });
-            recognition.onstart = () => micBtn.classList.add('listening');
-            recognition.onend = () => micBtn.classList.remove('listening');
+
+            recognition.onstart = () => {
+                micBtn.classList.add('listening');
+                chatInputArea.classList.add('mic-active');
+            };
+            recognition.onend = () => {
+                micBtn.classList.remove('listening');
+                chatInputArea.classList.remove('mic-active');
+            };
             recognition.onresult = (event) => {
-                chatInput.value = event.results[0][0].transcript;
+                const speechResult = event.results[0][0].transcript;
+                chatInput.value = speechResult;
+                handleTyping();
                 handleUserInput();
             };
             recognition.onerror = (event) => {
                 console.error("Speech recognition error:", event.error);
                 micBtn.classList.remove('listening');
+                chatInputArea.classList.remove('mic-active');
             };
         } else {
             micBtn.style.display = 'none';
         }
     });
 </script>
-<!-- ======================= END OF UPDATED SCRIPT BLOCK ======================= -->
-
 </body>
 </html>
