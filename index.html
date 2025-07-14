@@ -338,6 +338,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 
+<!-- ======================= UPDATED SCRIPT BLOCK ======================= -->
 <script>
     // --- SCROLL REVEAL ANIMATION ---
     document.addEventListener('DOMContentLoaded', () => {
@@ -428,7 +429,7 @@
             messageEl.textContent = text;
             chatMessages.appendChild(messageEl);
             chatMessages.scrollTop = chatMessages.scrollHeight;
-            speakText(text);
+            speakText(text); // This function is now updated
         }
 
         const knowledgeBase = {
@@ -453,16 +454,47 @@
             return knowledgeBase.default.response;
         }
 
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-
+        // --- UPDATED: This function now calls your backend API ---
         function speakText(text) {
-            window.speechSynthesis.cancel();
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'en-US';
-            window.speechSynthesis.speak(utterance);
+            // <<< THIS IS THE CORRECTED LINE
+            const backendUrl = 'https://rohbot.vercel.app/api/tts';
+
+            fetch(backendUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: text }),
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('API request failed. Falling back to default voice.');
+                    }
+                    return response.blob();
+                })
+                .then(audioBlob => {
+                    const audioUrl = URL.createObjectURL(audioBlob);
+                    const audio = new Audio(audioUrl);
+                    audio.play();
+
+                    audio.onended = () => {
+                        URL.revokeObjectURL(audioUrl);
+                    };
+                })
+                .catch(error => {
+                    console.error('Custom voice error:', error);
+                    console.log('Using default browser voice as a fallback.');
+
+                    window.speechSynthesis.cancel();
+                    const utterance = new SpeechSynthesisUtterance(text);
+                    utterance.lang = 'en-US';
+                    window.speechSynthesis.speak(utterance);
+                });
         }
 
+        // --- This section for voice input (microphone) remains the same ---
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
         if (recognition) {
             recognition.continuous = false;
             recognition.lang = 'en-US';
@@ -484,6 +516,7 @@
         }
     });
 </script>
+<!-- ======================= END OF UPDATED SCRIPT BLOCK ======================= -->
 
 </body>
 </html>
