@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rohanraje Bhosale - Data Scientist & AI Engineer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --background-color: #111111;
+            --surface-color: #1a1a1a;
+            --border-color: #2e2e2e;
+            --text-color: #f0f0f0;
+            --subtle-text-color: #999999;
+            --accent-color: #ffffff;
+            --chatbot-accent-color: #007aff;
+            --glow-color: rgba(0, 122, 255, 0.7);
+        }
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        #tsparticles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        .container { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
+        .section { padding: 120px 0; border-top: 1px solid var(--border-color); }
+        .section-header h2 {
+            font-size: 2rem; font-weight: 900; color: var(--text-color);
+            margin: 0 0 10px 0; display: inline-block; position: relative;
+        }
+        .section-header h2::after {
+            content: ''; position: absolute; bottom: -5px; left: 0;
+            width: 50px; height: 3px; background: var(--accent-color);
+        }
+        header { padding: 180px 0; min-height: 80vh; display: flex; align-items: center; }
+        .header-content h1 { font-size: 3.5rem; font-weight: 900; margin: 0; }
+        .header-content .subtitle { font-size: 1.25rem; color: var(--subtle-text-color); margin: 10px 0 0 0; max-width: 600px; }
+        .header-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
+        .header-links a {
+            color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s;
+            font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;
+        }
+        .header-links a:hover { color: var(--accent-color); }
+        .experience-item { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; margin-bottom: 40px; }
+        .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
+        .experience-item-meta p { color: var(--subtle-text-color); margin: 0; }
+        .experience-item-desc ul { list-style: none; padding-left: 0; margin: 0; }
+        .experience-item-desc li { padding-left: 20px; position: relative; margin-bottom: 10px; }
+        .experience-item-desc li::before { content: '–'; position: absolute; left: 0; color: var(--subtle-text-color); }
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .project-card {
+            background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color); padding: 25px; border-radius: 8px;
+            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+            text-decoration: none; color: var(--text-color); display: flex; flex-direction: column;
+        }
+        .project-card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .project-card h3 { font-size: 1.2rem; margin: 0 0 10px 0; }
+        .project-card p { color: var(--subtle-text-color); font-size: 0.9rem; margin: 0; flex-grow: 1; }
+        .project-tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .project-tag {
+            background-color: var(--background-color); color: var(--subtle-text-color); font-size: 0.75rem;
+            padding: 4px 10px; border-radius: 15px; border: 1px solid var(--border-color);
+        }
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
+        .skills-category h3 {
+            font-size: 1.1rem; font-weight: 500; color: var(--text-color);
+            border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin: 0 0 15px 0;
+        }
+        .skills-category ul { list-style: none; padding: 0; margin: 0; color: var(--subtle-text-color); font-size: 0.95rem; }
+        .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- CHATBOT & PROMPT STYLES --- */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px 5px var(--glow-color), 0 0 8px 2px var(--glow-color) inset; }
+            50% { box-shadow: 0 0 35px 10px var(--glow-color), 0 0 12px 4px var(--glow-color) inset; }
+        }
+        @keyframes nudge-right {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
+        }
+        .floating-prompt {
+            position: fixed; bottom: 50px; right: 105px; display: flex; align-items: center;
+            gap: 10px; padding: 8px 15px; background-color: rgba(26, 26, 26, 0.85);
+            backdrop-filter: blur(5px); border: 1px solid var(--border-color);
+            border-radius: 20px; color: var(--text-color); font-size: 0.9rem;
+            font-weight: 500; z-index: 998; pointer-events: none;
+            animation: nudge-right 2.5s infinite ease-in-out;
+            transition: opacity 0.3s ease;
+        }
+        .floating-prompt svg { width: 24px; height: 24px; fill: var(--text-color); }
+        .floating-prompt.hidden { opacity: 0; }
+
+        .chatbot-fab {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background-color: var(--chatbot-accent-color); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 1000; transition: transform 0.3s ease;
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        .chatbot-fab:hover { transform: scale(1.1); animation-play-state: paused; }
+        .chatbot-fab i { font-size: 24px; color: white; }
+
+        .chat-window {
+            display: none; position: fixed; bottom: 100px; right: 30px;
+            width: 370px; max-width: 90vw; height: 550px; max-height: 70vh;
+            background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color); border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 999;
+            flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif;
+        }
+        .chat-header {
+            padding: 15px 20px; background-color: rgba(17, 17, 17, 0.9);
+            border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 500; }
+        .chat-close-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; }
+        .chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; }
+        .chat-message.user {
+            background-color: var(--chatbot-accent-color); color: white;
+            align-self: flex-end; border-bottom-right-radius: 4px;
+        }
+        .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); }
+        #chat-input {
+            flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color);
+            border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none;
+        }
+        .chat-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; width: 40px; transition: color 0.3s; }
+        .chat-btn:hover { color: var(--accent-color); }
+        #mic-btn.listening { color: var(--chatbot-accent-color); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        @media (max-width: 768px) {
+            .header-content h1 { font-size: 2.5rem; }
+            .experience-item { grid-template-columns: 1fr; gap: 20px; }
+            .chat-window { bottom: 80px; right: 15px; }
+            .chatbot-fab { bottom: 20px; right: 20px; }
+            .floating-prompt { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="tsparticles"></div>
+
+<div class="container">
+    <header>
+        <div class="header-content reveal">
+            <h1>Rohanraje Bhosale</h1>
+            <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
+            <div class="header-links">
+                <a href="mailto:therohanrajebhosale@gmail.com"><i class="fas fa-envelope"></i> therohanrajebhosale@gmail.com</a>
+                <a href="https://linkedin.com/in/rohanraje-bhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="tel:+15085095706"><i class="fas fa-phone"></i> +1 (508)-509-5706</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="about" class="section">
+            <p class="about-text reveal" style="font-size: 1.2rem; line-height: 1.8; max-width: 750px;">I am a data professional with a passion for building intelligent systems. My experience spans from academic instruction in core data principles to engineering scalable ML pipelines and developing state-of-the-art agentic AI systems. I thrive on translating complex technical challenges into robust, impactful, and actionable business solutions.</p>
+        </section>
+
+        <section id="experience" class="section">
+            <div class="section-header reveal">
+                <h2>Work Experience</h2>
+            </div>
+            <div class="experience-item reveal">
+                <div class="experience-item-meta">
+                    <h3>Sahyadri Polytechnic Sawarde</h3>
+                    <p>Assistant Professor</p>
+                    <p>June 2022 – January 2024</p>
+                </div>
+                <div class="experience-item-desc">
+                    <ul>
+                        <li>Designed and delivered DBMS and Python courses to 150+ undergraduates annually, integrating SQL, ETL, Pandas, and NumPy.</li>
+                        <li>Developed automated grading tools and plagiarism detectors to uphold academic integrity and accelerate feedback by 60%.</li>
+                        <li>Mentored 12+ student tech groups through hackathons and research expos, guiding winning teams in 3 institutional-level innovation competitions.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="experience-item reveal">
+                <div class="experience-item-meta">
+                    <h3>Trismus Healthcare Technologies</h3>
+                    <p>Machine Learning Engineer Intern</p>
+                    <p>January 2022 – June 2022</p>
+                </div>
+                <div class="experience-item-desc">
+                    <ul>
+                        <li>Engineered scalable preprocessing pipelines for high-resolution dental image datasets, reducing training time by 35%.</li>
+                        <li>Designed and evaluated CNN architectures for image classification, creating dashboards that translated technical results into business insights.</li>
+                        <li>Built quality assurance protocols and data audit tools to maintain dataset integrity and reproducibility across ML workflows.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="section-header reveal">
+                <h2>Projects</h2>
+            </div>
+            <div class="projects-grid">
+                <a href="#" class="project-card reveal">
+                    <h3>Agentic AI-Powered Customer Support</h3>
+                    <p>Built a CrewAI-powered system with RAG and ChromaDB, automating 85% of Tier-1 queries and cutting escalation rates by 40%.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">CrewAI</span><span class="project-tag">RAG</span><span class="project-tag">GPT-4</span><span class="project-tag">LLM</span>
+                    </div>
+                </a>
+                <a href="#" class="project-card reveal">
+                    <h3>Agentic AI-Driven Market Intelligence</h3>
+                    <p>Designed a LangGraph/LangChain agent processing 10K+ docs daily from 200+ sources with 92% accuracy in trend forecasting.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">LangGraph</span><span class="project-tag">Streamlit</span><span class="project-tag">BigQuery</span><span class="project-tag">Agentic AI</span>
+                    </div>
+                </a>
+                <a href="#" class="project-card reveal">
+                    <h3>ML Framework for Skin Disease Detection</h3>
+                    <p>Developed an end-to-end R-based pipeline for early skin cancer detection, improving diagnostic precision by 22%.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">R</span><span class="project-tag">ML Pipeline</span><span class="project-tag">caret</span><span class="project-tag">Image Analysis</span>
+                    </div>
+                </a>
+                <a href="#" class="project-card reveal">
+                    <h3>Leukemia Research Bibliometric Analysis</h3>
+                    <p>Applied NLP and network analysis on Scopus data to create interactive dashboards identifying research frontiers.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">NLP</span><span class="project-tag">Network Analysis</span><span class="project-tag">Plotly</span><span class="project-tag">Python</span>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="section-header reveal">
+                <h2>Technical Skills</h2>
+            </div>
+            <div class="skills-grid">
+                <div class="skills-category reveal">
+                    <h3>Languages</h3>
+                    <ul><li>Python, R, SQL, MATLAB</li></ul>
+                </div>
+                <div class="skills-category reveal">
+                    <h3>AI/ML Frameworks</h3>
+                    <ul><li>TensorFlow, PyTorch, Scikit-learn, Hugging Face, LangChain, LangGraph</li></ul>
+                </div>
+                <div class="skills-category reveal">
+                    <h3>LLM & RAG</h3>
+                    <ul><li>OpenAI API, Claude, Prompt Engineering, RAG, FAISS, Pinecone</li></ul>
+                </div>
+                <div class="skills-category reveal">
+                    <h3>Cloud Platforms</h3>
+                    <ul><li>AWS (S3, Glue, Lambda, Athena, Redshift), Azure, GCP</li></ul>
+                </div>
+                <div class="skills-category reveal">
+                    <h3>Data Engineering & ETL</h3>
+                    <ul><li>AWS Glue, Azure Data Factory, Apache Airflow, Apache Spark</li></ul>
+                </div>
+                <div class="skills-category reveal">
+                    <h3>Databases & Querying</h3>
+                    <ul><li>MySQL, PostgreSQL, MS SQL Server, MongoDB, Snowflake, Redshift</li></ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="education" class="section">
+            <div class="section-header reveal">
+                <h2>Education</h2>
+            </div>
+            <div class="experience-item reveal">
+                <div class="experience-item-meta">
+                    <h3>University of Massachusetts Dartmouth</h3>
+                    <p>Dartmouth, MA</p>
+                </div>
+                <div class="experience-item-desc">
+                    <h3 style="margin-top:0;">Master's in Data Science (Expected)</h3>
+                    <p>January 2026</p>
+                </div>
+            </div>
+            <div class="experience-item reveal">
+                <div class="experience-item-meta">
+                    <h3>Symbiosis International University</h3>
+                    <p>MH, India</p>
+                </div>
+                <div class="experience-item-desc">
+                    <h3 style="margin-top:0;">B.Tech in Computer Science and Engineering</h3>
+                    <p>June 2022</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer style="text-align:center; padding: 40px 20px; border-top: 1px solid var(--border-color); color: var(--subtle-text-color); font-size: 0.9rem;">
+        <p>© 2024 Rohanraje Bhosale. Designed with a focus on clarity and professionalism.</p>
+    </footer>
+</div>
+
+<div class="floating-prompt" id="floating-prompt">
+    <span>Interview me here</span>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M13.1717 12.0001L8.22192 7.05029L9.63614 5.63608L16.0001 12.0001L9.63614 18.364L8.22192 16.9498L13.1717 12.0001Z"></path>
+    </svg>
+</div>
+
+<div class="chatbot-fab" id="chatbot-fab">
+    <i class="fas fa-brain"></i>
+</div>
+
+<div class="chat-window" id="chat-window">
+    <div class="chat-header">
+        <h3>ROHbot</h3>
+        <button class="chat-close-btn" id="chat-close-btn">×</button>
+    </div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input-area">
+        <button class="chat-btn" id="mic-btn"><i class="fas fa-microphone"></i></button>
+        <input type="text" id="chat-input" placeholder="Ask about LLMs, AWS, projects...">
+        <button class="chat-btn" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+
+<script>
+    // --- SCROLL REVEAL ANIMATION ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const revealElements = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.1 });
+        revealElements.forEach(el => observer.observe(el));
+    });
+
+    // --- DYNAMIC PARTICLE BACKGROUND ---
+    window.addEventListener('load', () => {
+        tsParticles.load("tsparticles", {
+            fpsLimit: 60,
+            interactivity: {
+                events: {
+                    onHover: { enable: true, mode: "repulse" },
+                    resize: true,
+                },
+                modes: { repulse: { distance: 100, duration: 0.4 } },
+            },
+            particles: {
+                color: { value: "#444444" },
+                links: { color: "#555555", distance: 150, enable: true, opacity: 0.2, width: 1 },
+                collisions: { enable: true },
+                move: {
+                    direction: "none", enable: true, outModes: { default: "bounce" },
+                    random: false, speed: 0.5, straight: false,
+                },
+                number: { density: { enable: true, area: 800 }, value: 80 },
+                opacity: { value: 0.2 },
+                shape: { type: "circle" },
+                size: { value: { min: 1, max: 3 } },
+            },
+            detectRetina: true,
+        });
+    });
+
+    // --- CHATBOT LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        const chatbotFab = document.getElementById('chatbot-fab');
+        const chatWindow = document.getElementById('chat-window');
+        const closeBtn = document.getElementById('chat-close-btn');
+        const sendBtn = document.getElementById('send-btn');
+        const micBtn = document.getElementById('mic-btn');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const floatingPrompt = document.getElementById('floating-prompt');
+
+        chatbotFab.addEventListener('click', () => {
+            chatWindow.style.display = 'flex';
+            floatingPrompt.classList.add('hidden');
+            if (chatMessages.children.length === 0) {
+                addBotMessage("Hello. I am ROHbot, a custom AI trained on Rohan's portfolio. You can ask me about his skills in Agentic AI, his projects with cloud platforms like AWS, or his experience with LLMs. How can I help?");
+            }
+        });
+
+        closeBtn.addEventListener('click', () => {
+            chatWindow.style.display = 'none';
+            floatingPrompt.classList.remove('hidden');
+        });
+
+        sendBtn.addEventListener('click', handleUserInput);
+        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserInput(); });
+
+        function handleUserInput() {
+            const userText = chatInput.value.trim();
+            if (!userText) return;
+            addUserMessage(userText);
+            chatInput.value = '';
+            setTimeout(() => {
+                const botResponse = findBotResponse(userText);
+                addBotMessage(botResponse);
+            }, 500);
+        }
+
+        function addUserMessage(text) {
+            const messageEl = document.createElement('div');
+            messageEl.className = 'chat-message user';
+            messageEl.textContent = text;
+            chatMessages.appendChild(messageEl);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function addBotMessage(text) {
+            const messageEl = document.createElement('div');
+            messageEl.className = 'chat-message bot';
+            messageEl.textContent = text;
+            chatMessages.appendChild(messageEl);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            speakText(text);
+        }
+
+        const knowledgeBase = {
+            'greeting': { keywords: ['hello', 'hi', 'hey'], response: "Hello! I'm ready to answer your questions about Rohan's qualifications. What technical area interests you most?" },
+            'capability': { keywords: ['capability', 'approach', 'fit', 'why him'], response: "Rohan's key capability is bridging the gap between complex AI theory and practical, scalable solutions. He has hands-on experience building end-to-end systems, like his Agentic AI project, which demonstrates his ability to architect and deploy multi-step, intelligent applications." },
+            'foundation_models': { keywords: ['foundation model', 'llm', 'large language', 'rag', 'gpt', 'crewai', 'langchain', 'agentic'], response: "Rohan has extensive, hands-on experience with foundation models. He has built agentic systems using frameworks like LangChain, LangGraph, and CrewAI with models like GPT-4. His projects showcase a deep understanding of Retrieval-Augmented Generation (RAG) using vector databases like ChromaDB and FAISS to ground models in external knowledge." },
+            'cloud_aws': { keywords: ['cloud', 'aws', 'azure', 'gcp', 's3', 'glue', 'lambda'], response: "He is proficient with multiple cloud platforms, with a strong focus on AWS. His skills include core services like S3 for storage, Lambda for serverless compute, and a full data engineering stack with Glue for ETL, Athena for querying, and Redshift for data warehousing. This demonstrates his ability to build and manage data solutions in a cloud-native environment." },
+            'python_sql': { keywords: ['python', 'sql'], response: "He is highly proficient in both. Python is his primary language for AI/ML, using it with libraries like PyTorch, TensorFlow, and LangChain. His SQL expertise is robust, covering everything from complex queries to database design, as demonstrated in his academic teaching and projects involving BigQuery and PostgreSQL." },
+            'large_scale_data': { keywords: ['large scale', 'spark', 'big data', 'processing', 'etl'], response: "Yes, Rohan is equipped to handle large-scale data. His skill set includes key big data technologies like Apache Spark and cloud-native ETL tools such as AWS Glue. This experience, combined with his work on distributed databases like Redshift and BigQuery, shows he can architect and execute data pipelines for massive datasets." },
+            'production_shipping': { keywords: ['production', 'shipping', 'deploy', 'end-to-end'], response: "He has built and deployed several end-to-end systems that demonstrate his proficiency in creating scalable and reliable solutions. For example, his AI market intelligence agent was designed for continuous data processing, and his skin cancer detection framework handled the full ML lifecycle. He is focused on building production-grade AI." },
+            'contact': { keywords: ['contact', 'email', 'phone', 'linkedin'], response: "You can reach Rohan via email at therohanrajebhosale@gmail.com, or find him on LinkedIn. His contact details are also at the top of this page." },
+            'default': { response: "That's an interesting question. It highlights the complexity of modern AI systems. Based on Rohan's projects, his approach would likely involve breaking the problem down, leveraging a powerful framework like LangChain or PyTorch, and ensuring the data pipeline is robust. Could I tell you more about a specific project?" }
+        };
+
+        function findBotResponse(userInput) {
+            const lowerInput = userInput.toLowerCase();
+            for (const key in knowledgeBase) {
+                if (key !== 'default' && knowledgeBase[key].keywords.some(k => lowerInput.includes(k))) {
+                    return knowledgeBase[key].response;
+                }
+            }
+            return knowledgeBase.default.response;
+        }
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+        function speakText(text) {
+            window.speechSynthesis.cancel();
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'en-US';
+            window.speechSynthesis.speak(utterance);
+        }
+
+        if (recognition) {
+            recognition.continuous = false;
+            recognition.lang = 'en-US';
+            micBtn.addEventListener('click', () => {
+                if (micBtn.classList.contains('listening')) { recognition.stop(); } else { recognition.start(); }
+            });
+            recognition.onstart = () => micBtn.classList.add('listening');
+            recognition.onend = () => micBtn.classList.remove('listening');
+            recognition.onresult = (event) => {
+                chatInput.value = event.results[0][0].transcript;
+                handleUserInput();
+            };
+            recognition.onerror = (event) => {
+                console.error("Speech recognition error:", event.error);
+                micBtn.classList.remove('listening');
+            };
+        } else {
+            micBtn.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
