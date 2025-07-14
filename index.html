@@ -54,6 +54,28 @@
             font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;
         }
         .header-links a:hover { color: var(--accent-color); }
+
+        /* NEW: Resume Button Style */
+        .resume-btn {
+            background-color: var(--surface-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: background-color 0.3s, border-color 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .resume-btn:hover {
+            background-color: var(--accent-color);
+            border-color: var(--accent-color);
+            color: var(--background-color);
+        }
+
         .experience-item { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; margin-bottom: 40px; }
         .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
         .experience-item-meta p { color: var(--subtle-text-color); margin: 0; }
@@ -161,14 +183,9 @@
 
         /* NEW: Button visibility logic */
         .chat-btn.hidden { display: none !important; }
-
-        /* By default, hide the send button */
         .chat-input-area:not(.typing) #send-btn { display: none; }
-        /* When typing, hide the mic button and show send button */
         .chat-input-area.typing #mic-btn { display: none; }
         .chat-input-area.typing #send-btn { display: flex; }
-
-        /* When bot is speaking, hide mic/send and show stop */
         .chat-input-area.bot-speaking #mic-btn,
         .chat-input-area.bot-speaking #send-btn { display: none; }
         .chat-input-area.bot-speaking #stop-btn { display: flex; }
@@ -180,7 +197,6 @@
             animation: pulse 1.5s infinite;
         }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        /* NEW: Input field highlight when listening */
         .chat-input-area.mic-active #chat-input {
             border-color: var(--chatbot-accent-color);
             box-shadow: 0 0 5px var(--glow-color);
@@ -208,6 +224,8 @@
                 <a href="mailto:therohanrajebhosale@gmail.com"><i class="fas fa-envelope"></i> therohanrajebhosale@gmail.com</a>
                 <a href="https://linkedin.com/in/rohanraje-bhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
                 <a href="tel:+15085095706"><i class="fas fa-phone"></i> +1 (508)-509-5706</a>
+                <!-- NEW: Resume Button -->
+                <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
             </div>
         </div>
     </header>
@@ -256,6 +274,14 @@
                 <h2>Projects</h2>
             </div>
             <div class="projects-grid">
+                <!-- NEW: ROHbot Project Card -->
+                <a href="#" class="project-card reveal" onclick="document.getElementById('chatbot-fab').click(); return false;">
+                    <h3>Conversational AI Assistant (ROHbot)</h3>
+                    <p>This portfolio's interactive assistant. A full-stack RAG system using Gemini for reasoning, Supabase/pgvector for knowledge storage, and ElevenLabs for voice cloning. Ask it about me!</p>
+                    <div class="project-tags">
+                        <span class="project-tag">RAG</span><span class="project-tag">Gemini</span><span class="project-tag">Supabase</span><span class="project-tag">Vercel</span><span class="project-tag">ElevenLabs</span>
+                    </div>
+                </a>
                 <a href="#" class="project-card reveal">
                     <h3>Agentic AI-Powered Customer Support</h3>
                     <p>Built a CrewAI-powered system with RAG and ChromaDB, automating 85% of Tier-1 queries and cutting escalation rates by 40%.</p>
@@ -275,13 +301,6 @@
                     <p>Developed an end-to-end R-based pipeline for early skin cancer detection, improving diagnostic precision by 22%.</p>
                     <div class="project-tags">
                         <span class="project-tag">R</span><span class="project-tag">ML Pipeline</span><span class="project-tag">caret</span><span class="project-tag">Image Analysis</span>
-                    </div>
-                </a>
-                <a href="#" class="project-card reveal">
-                    <h3>Leukemia Research Bibliometric Analysis</h3>
-                    <p>Applied NLP and network analysis on Scopus data to create interactive dashboards identifying research frontiers.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">NLP</span><span class="project-tag">Network Analysis</span><span class="project-tag">Plotly</span><span class="project-tag">Python</span>
                     </div>
                 </a>
             </div>
@@ -378,7 +397,7 @@
 
 <!-- ======================= FINAL SCRIPT BLOCK WITH ALL UX UPGRADES ======================= -->
 <script>
-    // --- SCROLL REVEAL ANIMATION ---
+    // --- SCROLL REVEAL & PARTICLES (Unchanged) ---
     document.addEventListener('DOMContentLoaded', () => {
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver(entries => {
@@ -386,38 +405,16 @@
         }, { threshold: 0.1 });
         revealElements.forEach(el => observer.observe(el));
     });
-
-    // --- DYNAMIC PARTICLE BACKGROUND ---
     window.addEventListener('load', () => {
         tsParticles.load("tsparticles", {
-            fpsLimit: 60,
-            interactivity: {
-                events: {
-                    onHover: { enable: true, mode: "repulse" },
-                    resize: true,
-                },
-                modes: { repulse: { distance: 100, duration: 0.4 } },
-            },
-            particles: {
-                color: { value: "#444444" },
-                links: { color: "#555555", distance: 150, enable: true, opacity: 0.2, width: 1 },
-                collisions: { enable: true },
-                move: {
-                    direction: "none", enable: true, outModes: { default: "bounce" },
-                    random: false, speed: 0.5, straight: false,
-                },
-                number: { density: { enable: true, area: 800 }, value: 80 },
-                opacity: { value: 0.2 },
-                shape: { type: "circle" },
-                size: { value: { min: 1, max: 3 } },
-            },
+            fpsLimit: 60, interactivity: { events: { onHover: { enable: true, mode: "repulse" }, resize: true, }, modes: { repulse: { distance: 100, duration: 0.4 } }, },
+            particles: { color: { value: "#444444" }, links: { color: "#555555", distance: 150, enable: true, opacity: 0.2, width: 1 }, collisions: { enable: true }, move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 0.5, straight: false, }, number: { density: { enable: true, area: 800 }, value: 80 }, opacity: { value: 0.2 }, shape: { type: "circle" }, size: { value: { min: 1, max: 3 } }, },
             detectRetina: true,
         });
     });
 
     // --- CHATBOT LOGIC ---
     document.addEventListener('DOMContentLoaded', () => {
-        // --- Element selection ---
         const chatbotFab = document.getElementById('chatbot-fab');
         const chatWindow = document.getElementById('chat-window');
         const closeBtn = document.getElementById('chat-close-btn');
@@ -429,9 +426,8 @@
         const chatMessages = document.getElementById('chat-messages');
         const floatingPrompt = document.getElementById('floating-prompt');
 
-        let currentAudio = null; // Holds the currently playing audio element
+        let currentAudio = null;
 
-        // --- Event Listeners ---
         chatbotFab.addEventListener('click', openChat);
         closeBtn.addEventListener('click', closeChat);
         sendBtn.addEventListener('click', handleUserInput);
@@ -448,7 +444,7 @@
         }
 
         function closeChat() {
-            stopBotSpeaking(); // Stop any audio if chat is closed
+            stopBotSpeaking();
             chatWindow.style.display = 'none';
             floatingPrompt.classList.remove('hidden');
         }
@@ -466,7 +462,7 @@
             if (!userText) return;
             addUserMessage(userText);
             chatInput.value = '';
-            handleTyping(); // Reset button visibility
+            handleTyping();
             getGeminiResponse(userText);
         }
 
