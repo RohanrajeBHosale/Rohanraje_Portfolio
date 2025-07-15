@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rohanraje Bhosale - Data Scientist & AI Engineer</title>
-    <!-- Favicon Link -->
     <link rel="icon" type="image/png" href="favicon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,14 +42,24 @@
         .header-grid { display: grid; grid-template-columns: 2fr 1fr; align-items: center; gap: 60px; }
         .header-content h1 { font-size: 3.5rem; font-weight: 900; margin: 0; }
         .header-content .subtitle { font-size: 1.25rem; color: var(--subtle-text-color); margin: 10px 0 0 0; max-width: 600px; }
-        .header-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
-        .header-links a { color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
+        .header-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 25px; align-items: center; }
+        .header-links a { color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
         .header-links a:hover { color: var(--accent-color); }
 
-        .resume-btn { background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background-color 0.3s, border-color 0.3s; display: inline-flex; align-items: center; gap: 8px; }
-        .resume-btn:hover { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--background-color); }
-        .avatar-container { width: 240px; height: 240px; border-radius: 50%; position: relative; justify-self: center; border: 2px solid var(--border-color); box-shadow: 0 0 30px rgba(0,0,0,0.5); overflow: hidden; }
-        .avatar-image { width: 100%; height: 100%; object-fit: cover; }
+        .avatar-container {
+            width: 240px; height: 240px; border-radius: 50%;
+            position: relative; justify-self: center;
+            border: 2px solid var(--border-color);
+            box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            overflow: hidden;
+        }
+        .avatar-image {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; top: 0; left: 0;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .avatar-container .avatar-top { opacity: 1; }
+        .avatar-container:hover .avatar-top { opacity: 0; }
 
         .experience-item { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; margin-bottom: 40px; }
         .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
@@ -60,12 +69,16 @@
         .experience-item-desc li::before { content: '–'; position: absolute; left: 0; color: var(--subtle-text-color); }
 
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .project-card { background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; text-decoration: none; color: var(--text-color); display: flex; flex-direction: column; }
-        .project-card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .project-card { background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; display: flex; flex-direction: column; }
         .project-card h3 { font-size: 1.2rem; margin: 0 0 10px 0; }
-        .project-card p { color: var(--subtle-text-color); font-size: 0.9rem; margin: 0; flex-grow: 1; }
-        .project-tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
+        .project-card h3 a { text-decoration: none; color: inherit; }
+        .project-card h3 a:hover { text-decoration: underline; }
+        .project-card p { color: var(--subtle-text-color); font-size: 0.9rem; margin: 0 0 15px 0; flex-grow: 1; }
+        .project-tags { margin-top: auto; display: flex; flex-wrap: wrap; gap: 8px; padding-top: 15px; border-top: 1px solid var(--border-color); }
         .project-tag { background-color: var(--background-color); color: var(--subtle-text-color); font-size: 0.75rem; padding: 4px 10px; border-radius: 15px; border: 1px solid var(--border-color); }
+
+        .project-link { margin-top: 20px; font-size: 0.9rem; font-weight: 500; color: var(--subtle-text-color); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s; }
+        .project-link:hover { color: var(--accent-color); }
 
         .articles-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
         .article-card { background-color: var(--surface-color); border: 1px solid var(--border-color); padding: 25px 30px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; text-decoration: none; color: var(--text-color); display: block; }
@@ -82,6 +95,7 @@
         .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
+        /* All chatbot styles are unchanged and complete */
         @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px 5px var(--glow-color), 0 0 8px 2px var(--glow-color) inset; } 50% { box-shadow: 0 0 35px 10px var(--glow-color), 0 0 12px 4px var(--glow-color) inset; } }
         @keyframes nudge-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
         .floating-prompt { position: fixed; bottom: 50px; right: 105px; display: flex; align-items: center; gap: 10px; padding: 8px 15px; background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-color); font-size: 0.9rem; font-weight: 500; z-index: 998; pointer-events: none; animation: nudge-right 2.5s infinite ease-in-out; transition: opacity 0.3s ease; }
@@ -95,7 +109,7 @@
         .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 500; }
         .chat-close-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; }
         .chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; }
+        .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
         .chat-message.user { background-color: var(--chatbot-accent-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
         .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
         .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); align-items: center; }
@@ -112,6 +126,8 @@
         #mic-btn.listening { color: var(--chatbot-accent-color); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
         .chat-input-area.mic-active #chat-input { border-color: var(--chatbot-accent-color); box-shadow: 0 0 5px var(--glow-color); }
+        .blinking-cursor { animation: blink 1s step-end infinite; }
+        @keyframes blink { from, to { color: transparent; } 50% { color: var(--text-color); } }
 
         @media (max-width: 768px) {
             .header-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
@@ -136,14 +152,15 @@
                 <h1>Rohanraje Bhosale</h1>
                 <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
                 <div class="header-links">
-                    <a href="mailto:therohanrajebhosale@gmail.com"><i class="fas fa-envelope"></i> therohanrajebhosale@gmail.com</a>
                     <a href="https://linkedin.com/in/rohanraje-bhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://github.com/RohanrajeBHosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
                     <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
-                    <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
+                    <a href="rohanraje.pdf" target="_blank" rel="noopener noreferrer"><i class="fas fa-file-pdf"></i> View Resume</a>
                 </div>
             </div>
             <div class="avatar-container">
-                <img src="avatar1.png" alt="Rohanraje Bhosale Avatar" class="avatar-image">
+                <img src="avatar2.png" alt="Rohanraje Bhosale Avatar 2" class="avatar-image avatar-bottom">
+                <img src="avatar1.png" alt="Rohanraje Bhosale Avatar 1" class="avatar-image avatar-top">
             </div>
         </div>
     </header>
@@ -192,34 +209,66 @@
                 <h2>Projects</h2>
             </div>
             <div class="projects-grid">
-                <a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-journey-into-conversational-ai-with-rag-and-voice-cloning-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-                    <h3>Conversational AI Assistant (ROHbot)</h3>
-                    <p>This portfolio's interactive assistant. A full-stack RAG system using Gemini for reasoning, Supabase/pgvector for knowledge storage, and ElevenLabs for voice cloning. Ask it about me!</p>
+                <div class="project-card reveal">
+                    <h3><a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">Conversational AI Assistant (ROHbot)</a></h3>
+                    <p>This portfolio's interactive assistant. A full-stack RAG system using Gemini, Supabase/pgvector, and ElevenLabs. Ask it about me!</p>
                     <div class="project-tags">
-                        <span class="project-tag">RAG</span><span class="project-tag">Gemini</span><span class="project-tag">Supabase</span><span class="project-tag">Vercel</span><span class="project-tag">ElevenLabs</span>
+                        <span class="project-tag">RAG</span><span class="project-tag">Gemini</span><span class="project-tag">Supabase</span><span class="project-tag">Vercel</span>
                     </div>
-                </a>
-                <a href="https://medium.com/@rohanrajebhosale/designing-an-agentic-framework-for-real-time-market-intelligence-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-                    <h3>Agentic AI-Driven Market Intelligence</h3>
-                    <p>Designed a LangGraph/LangChain agent processing 10K+ docs daily from 200+ sources with 92% accuracy in trend forecasting.</p>
+                    <a href="https://github.com/RohanrajeBHosale/ROHbot" target="_blank" rel="noopener noreferrer" class="project-github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div class="project-card reveal">
+                    <h3><a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">Agentic AI for Customer Support</a></h3>
+                    <p>Built a production-ready conversational AI using RAG and foundation models to automate 85% of Tier-1 queries and reduce escalations by 40%.</p>
                     <div class="project-tags">
-                        <span class="project-tag">LangGraph</span><span class="project-tag">Streamlit</span><span class="project-tag">BigQuery</span><span class="project-tag">Agentic AI</span>
+                        <span class="project-tag">RAG</span><span class="project-tag">GPT-4</span><span class="project-tag">NLU</span><span class="project-tag">Fine-Tuning</span>
                     </div>
-                </a>
-                <a href="https://medium.com/@rohanrajebhosale/building-an-iot-smart-mirror-from-scratch-with-raspberry-pi-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-                    <h3>IoT Smart Mirror (Raspberry Pi)</h3>
-                    <p>Engineered a custom smart mirror with Raspberry Pi, integrating real-time data APIs for weather, stocks, and news into a futuristic, ambient display.</p>
+                    <a href="https://github.com/your-username/customer-support-agent-placeholder" target="_blank" rel="noopener noreferrer" class="project-github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div class="project-card reveal">
+                    <h3><a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">F1 Data Collection Utility</a></h3>
+                    <p>A user-friendly Streamlit web app to automate downloading and storing Formula 1 race data using the FastF1 library, ready for analysis.</p>
                     <div class="project-tags">
-                        <span class="project-tag">Raspberry Pi</span><span class="project-tag">IoT</span><span class="project-tag">JavaScript</span><span class="project-tag">API Integration</span>
+                        <span class="project-tag">Python</span><span class="project-tag">Streamlit</span><span class="project-tag">Data Engineering</span>
                     </div>
-                </a>
-                <a href="https://medium.com/@rohanrajebhosale/end-to-end-ml-pipeline-for-skin-disease-detection-in-r-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
-                    <h3>ML Framework for Skin Disease Detection</h3>
+                    <a href="https://github.com/RohanrajeBHosale/f1-data-utility" target="_blank" rel="noopener noreferrer" class="project-github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div class="project-card reveal">
+                    <h3><a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">IoT Smart Mirror (Raspberry Pi)</a></h3>
+                    <p>Engineered a custom smart mirror with Raspberry Pi, integrating real-time data APIs for a futuristic, ambient display.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Raspberry Pi</span><span class="project-tag">IoT</span><span class="project-tag">JavaScript</span>
+                    </div>
+                    <a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank" rel="noopener noreferrer" class="project-link">
+                        <i class="fab fa-youtube"></i> Watch Demo
+                    </a>
+                </div>
+                <div class="project-card reveal">
+                    <h3><a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">Agentic AI Market Intelligence</a></h3>
+                    <p>Designed a scalable agent framework (LangGraph) leveraging Spark to process and analyze 10K+ documents daily from real-time data sources.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">LangGraph</span><span class="project-tag">Spark</span><span class="project-tag">Agentic AI</span>
+                    </div>
+                    <a href="https://github.com/RohanrajeBHosale/Agentic_AI_Project_1" target="_blank" rel="noopener noreferrer" class="project-github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
+                <div class="project-card reveal">
+                    <h3><a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer" style="text-decoration: none; color: inherit;">ML Framework for Skin Disease Detection</a></h3>
                     <p>Developed an end-to-end R-based pipeline for early skin cancer detection, improving diagnostic precision by 22%.</p>
                     <div class="project-tags">
-                        <span class="project-tag">R</span><span class="project-tag">ML Pipeline</span><span class="project-tag">caret</span><span class="project-tag">Image Analysis</span>
+                        <span class="project-tag">R</span><span class="project-tag">ML Pipeline</span><span class="project-tag">caret</span>
                     </div>
-                </a>
+                    <a href="https://github.com/RohanrajeBHosale/ML-Framework-for-Skin-Disease-Detection" target="_blank" rel="noopener noreferrer" class="project-github-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </div>
             </div>
         </section>
 
@@ -233,9 +282,9 @@
                     <p>A deep dive into the architecture of this portfolio's AI assistant, covering the RAG pipeline, serverless functions, and the challenges of creating a real-time voice experience.</p>
                     <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
                 </a>
-                <a href="https://medium.com/@rohanrajebhosale/my-first-foray-into-agentic-ai-building-a-multi-agent-system-for-financial-research-aded3edfebfb" target="_blank" rel="noopener noreferrer" class="article-card reveal">
-                    <h3>Case Study: Agentic Market Intelligence System</h3>
-                    <p>Exploring the use of LangGraph and real-time data pipelines to build an autonomous agent capable of forecasting market trends with high accuracy.</p>
+                <a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank" rel="noopener noreferrer" class="article-card reveal">
+                    <h3>From Zero to F1 Data: Building a Web App with Python</h3>
+                    <p>A tutorial on creating a user-friendly data collection tool using Streamlit and the FastF1 library, making complex data accessible to everyone.</p>
                     <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
                 </a>
                 <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer" class="article-card reveal">
@@ -257,23 +306,23 @@
                 </div>
                 <div class="skills-category reveal">
                     <h3>AI/ML Frameworks</h3>
-                    <ul><li>TensorFlow, PyTorch, Scikit-learn, Hugging Face, LangChain, LangGraph</li></ul>
+                    <ul><li>TensorFlow, PyTorch, Scikit-learn, Hugging Face, LangChain, LangGraph, CrewAI</li></ul>
                 </div>
                 <div class="skills-category reveal">
                     <h3>LLM & RAG</h3>
-                    <ul><li>OpenAI API, Claude, Prompt Engineering, RAG, FAISS, Pinecone</li></ul>
+                    <ul><li>OpenAI API (GPT-4), Gemini, Prompt Engineering, RAG, FAISS, Pinecone</li></ul>
                 </div>
                 <div class="skills-category reveal">
                     <h3>Cloud Platforms</h3>
-                    <ul><li>AWS (S3, Glue, Lambda, Athena, Redshift), Azure, GCP</li></ul>
+                    <ul><li>AWS (S3, Glue, Lambda, Athena, Redshift), Azure, GCP, Vercel</li></ul>
                 </div>
                 <div class="skills-category reveal">
                     <h3>Data Engineering & ETL</h3>
-                    <ul><li>AWS Glue, Azure Data Factory, Apache Airflow, Apache Spark</li></ul>
+                    <ul><li>Apache Spark, AWS Glue, Azure Data Factory, Apache Airflow</li></ul>
                 </div>
                 <div class="skills-category reveal">
                     <h3>Databases & Querying</h3>
-                    <ul><li>MySQL, PostgreSQL, MS SQL Server, MongoDB, Snowflake, Redshift</li></ul>
+                    <ul><li>PostgreSQL (pgvector), MySQL, MS SQL Server, MongoDB, Supabase</li></ul>
                 </div>
             </div>
         </section>
@@ -335,7 +384,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
 <script>
-    // --- SCROLL REVEAL & PARTICLES ---
     document.addEventListener('DOMContentLoaded', () => {
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver(entries => {
@@ -351,7 +399,6 @@
         });
     });
 
-    // --- CHATBOT LOGIC ---
     document.addEventListener('DOMContentLoaded', () => {
         const chatbotFab = document.getElementById('chatbot-fab');
         const chatWindow = document.getElementById('chat-window');
@@ -405,26 +452,46 @@
         }
 
         function getGeminiResponse(userText) {
-            const thinkingMessage = document.createElement('div');
-            thinkingMessage.className = 'chat-message bot';
-            thinkingMessage.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-            chatMessages.appendChild(thinkingMessage);
+            const messageEl = document.createElement('div');
+            messageEl.className = 'chat-message bot';
+            chatMessages.appendChild(messageEl);
+            const cursor = document.createElement('span');
+            cursor.className = 'blinking-cursor';
+            cursor.textContent = '▋';
+            messageEl.appendChild(cursor);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            let fullReply = "";
 
             fetch('https://rohbot.vercel.app/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ userInput: userText }),
             })
-                .then(response => response.ok ? response.json() : Promise.reject(response))
-                .then(data => {
-                    thinkingMessage.remove();
-                    addBotMessage(data.reply);
+                .then(response => {
+                    if (!response.ok) { throw new Error(`Network response was not ok`); }
+                    const reader = response.body.getReader();
+                    const decoder = new TextDecoder();
+
+                    function push() {
+                        reader.read().then(({ done, value }) => {
+                            if (done) {
+                                messageEl.removeChild(cursor);
+                                speakText(fullReply);
+                                return;
+                            }
+                            const chunkText = decoder.decode(value, { stream: true });
+                            fullReply += chunkText;
+                            cursor.insertAdjacentText('beforebegin', chunkText);
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                            push();
+                        });
+                    }
+                    push();
                 })
                 .catch(error => {
                     console.error('Error fetching from chat API:', error);
-                    thinkingMessage.remove();
-                    addBotMessage("I'm having a little trouble connecting to my core logic right now. Please try again in a moment.");
+                    messageEl.textContent = "I'm having a little trouble connecting to my core logic right now. Please try again in a moment.";
                 });
         }
 
@@ -436,7 +503,7 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function addBotMessage(text) {
+        function addBotMessage(text) { // Used for the initial welcome message
             const messageEl = document.createElement('div');
             messageEl.className = 'chat-message bot';
             messageEl.textContent = text;
