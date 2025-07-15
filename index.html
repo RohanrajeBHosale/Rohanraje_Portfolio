@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rohanraje Bhosale - Data Scientist & AI Engineer</title>
+    <!-- Favicon Link -->
+    <link rel="icon" type="image/png" href="favicon.png">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
@@ -20,7 +23,6 @@
             --glow-color: rgba(0, 122, 255, 0.7);
         }
         *, *::before, *::after { box-sizing: border-box; }
-
         html { scroll-behavior: smooth; }
         body {
             background-color: var(--background-color);
@@ -31,50 +33,24 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
         }
-
-        #tsparticles {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
-        }
+        #tsparticles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .container { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
         .section { padding: 120px 0; border-top: 1px solid var(--border-color); }
-        .section-header h2 {
-            font-size: 2rem; font-weight: 900; color: var(--text-color);
-            margin: 0 0 10px 0; display: inline-block; position: relative;
-        }
-        .section-header h2::after {
-            content: ''; position: absolute; bottom: -5px; left: 0;
-            width: 50px; height: 3px; background: var(--accent-color);
-        }
-        header { padding: 180px 0; min-height: 80vh; display: flex; align-items: center; }
+        .section-header h2 { font-size: 2rem; font-weight: 900; color: var(--text-color); margin: 0 0 10px 0; display: inline-block; position: relative; }
+        .section-header h2::after { content: ''; position: absolute; bottom: -5px; left: 0; width: 50px; height: 3px; background: var(--accent-color); }
+
+        header { padding: 120px 0; min-height: 80vh; display: flex; align-items: center; }
+        .header-grid { display: grid; grid-template-columns: 2fr 1fr; align-items: center; gap: 60px; }
         .header-content h1 { font-size: 3.5rem; font-weight: 900; margin: 0; }
         .header-content .subtitle { font-size: 1.25rem; color: var(--subtle-text-color); margin: 10px 0 0 0; max-width: 600px; }
         .header-links { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 20px; align-items: center; }
-        .header-links a {
-            color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s;
-            font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px;
-        }
+        .header-links a { color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; }
         .header-links a:hover { color: var(--accent-color); }
 
-        /* NEW: Resume Button Style */
-        .resume-btn {
-            background-color: var(--surface-color);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            transition: background-color 0.3s, border-color 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .resume-btn:hover {
-            background-color: var(--accent-color);
-            border-color: var(--accent-color);
-            color: var(--background-color);
-        }
+        .resume-btn { background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--text-color); padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: background-color 0.3s, border-color 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .resume-btn:hover { background-color: var(--accent-color); border-color: var(--accent-color); color: var(--background-color); }
+        .avatar-container { width: 240px; height: 240px; border-radius: 50%; position: relative; justify-self: center; border: 2px solid var(--border-color); box-shadow: 0 0 30px rgba(0,0,0,0.5); overflow: hidden; }
+        .avatar-image { width: 100%; height: 100%; object-fit: cover; }
 
         .experience-item { display: grid; grid-template-columns: 1fr 3fr; gap: 40px; margin-bottom: 40px; }
         .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
@@ -82,128 +58,66 @@
         .experience-item-desc ul { list-style: none; padding-left: 0; margin: 0; }
         .experience-item-desc li { padding-left: 20px; position: relative; margin-bottom: 10px; }
         .experience-item-desc li::before { content: '–'; position: absolute; left: 0; color: var(--subtle-text-color); }
+
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .project-card {
-            background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color); padding: 25px; border-radius: 8px;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            text-decoration: none; color: var(--text-color); display: flex; flex-direction: column;
-        }
+        .project-card { background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); padding: 25px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; text-decoration: none; color: var(--text-color); display: flex; flex-direction: column; }
         .project-card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
         .project-card h3 { font-size: 1.2rem; margin: 0 0 10px 0; }
         .project-card p { color: var(--subtle-text-color); font-size: 0.9rem; margin: 0; flex-grow: 1; }
         .project-tags { margin-top: 20px; display: flex; flex-wrap: wrap; gap: 8px; }
-        .project-tag {
-            background-color: var(--background-color); color: var(--subtle-text-color); font-size: 0.75rem;
-            padding: 4px 10px; border-radius: 15px; border: 1px solid var(--border-color);
-        }
+        .project-tag { background-color: var(--background-color); color: var(--subtle-text-color); font-size: 0.75rem; padding: 4px 10px; border-radius: 15px; border: 1px solid var(--border-color); }
+
+        .articles-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        .article-card { background-color: var(--surface-color); border: 1px solid var(--border-color); padding: 25px 30px; border-radius: 8px; transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s; text-decoration: none; color: var(--text-color); display: block; }
+        .article-card:hover { transform: translateY(-5px); border-color: #444; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .article-card h3 { font-size: 1.3rem; margin: 0 0 10px 0; }
+        .article-card p { color: var(--subtle-text-color); font-size: 1rem; margin: 0 0 20px 0; }
+        .article-card .read-more { font-weight: 500; color: var(--text-color); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+        .article-card .read-more i { transition: transform 0.3s; }
+        .article-card:hover .read-more i { transform: translateX(5px); }
+
         .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
-        .skills-category h3 {
-            font-size: 1.1rem; font-weight: 500; color: var(--text-color);
-            border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin: 0 0 15px 0;
-        }
+        .skills-category h3 { font-size: 1.1rem; font-weight: 500; color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin: 0 0 15px 0; }
         .skills-category ul { list-style: none; padding: 0; margin: 0; color: var(--subtle-text-color); font-size: 0.95rem; }
         .reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
         .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        /* --- CHATBOT & PROMPT STYLES --- */
-        @keyframes pulse-glow {
-            0%, 100% { box-shadow: 0 0 20px 5px var(--glow-color), 0 0 8px 2px var(--glow-color) inset; }
-            50% { box-shadow: 0 0 35px 10px var(--glow-color), 0 0 12px 4px var(--glow-color) inset; }
-        }
-        @keyframes nudge-right {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
-        .floating-prompt {
-            position: fixed; bottom: 50px; right: 105px; display: flex; align-items: center;
-            gap: 10px; padding: 8px 15px; background-color: rgba(26, 26, 26, 0.85);
-            backdrop-filter: blur(5px); border: 1px solid var(--border-color);
-            border-radius: 20px; color: var(--text-color); font-size: 0.9rem;
-            font-weight: 500; z-index: 998; pointer-events: none;
-            animation: nudge-right 2.5s infinite ease-in-out;
-            transition: opacity 0.3s ease;
-        }
+        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px 5px var(--glow-color), 0 0 8px 2px var(--glow-color) inset; } 50% { box-shadow: 0 0 35px 10px var(--glow-color), 0 0 12px 4px var(--glow-color) inset; } }
+        @keyframes nudge-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+        .floating-prompt { position: fixed; bottom: 50px; right: 105px; display: flex; align-items: center; gap: 10px; padding: 8px 15px; background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-color); font-size: 0.9rem; font-weight: 500; z-index: 998; pointer-events: none; animation: nudge-right 2.5s infinite ease-in-out; transition: opacity 0.3s ease; }
         .floating-prompt svg { width: 24px; height: 24px; fill: var(--text-color); }
         .floating-prompt.hidden { opacity: 0; }
-
-        .chatbot-fab {
-            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
-            background-color: var(--chatbot-accent-color); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; z-index: 1000; transition: transform 0.3s ease;
-            animation: pulse-glow 3s infinite ease-in-out;
-        }
+        .chatbot-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: var(--chatbot-accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: transform 0.3s ease; animation: pulse-glow 3s infinite ease-in-out; }
         .chatbot-fab:hover { transform: scale(1.1); animation-play-state: paused; }
         .chatbot-fab i { font-size: 24px; color: white; }
-
-        .chat-window {
-            display: none; position: fixed; bottom: 100px; right: 30px;
-            width: 370px; max-width: 90vw; height: 550px; max-height: 70vh;
-            background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px);
-            border: 1px solid var(--border-color); border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 999;
-            flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif;
-        }
-        .chat-header {
-            padding: 15px 20px; background-color: rgba(17, 17, 17, 0.9);
-            border-bottom: 1px solid var(--border-color);
-            display: flex; justify-content: space-between; align-items: center;
-        }
+        .chat-window { display: none; position: fixed; bottom: 100px; right: 30px; width: 370px; max-width: 90vw; height: 550px; max-height: 70vh; background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 999; flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif; }
+        .chat-header { padding: 15px 20px; background-color: rgba(17, 17, 17, 0.9); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
         .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 500; }
         .chat-close-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; }
         .chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
         .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; }
-        .chat-message.user {
-            background-color: var(--chatbot-accent-color); color: white;
-            align-self: flex-end; border-bottom-right-radius: 4px;
-        }
+        .chat-message.user { background-color: var(--chatbot-accent-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
         .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
-
-        /* UPDATED: Input area styles */
-        .chat-input-area {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid var(--border-color);
-            background-color: rgba(17, 17, 17, 0.9);
-            align-items: center;
-        }
-        #chat-input {
-            flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color);
-            border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none;
-            transition: border-color 0.3s, box-shadow 0.3s;
-        }
-        .chat-btn {
-            background: none; border: none; color: var(--subtle-text-color);
-            font-size: 20px; cursor: pointer; width: 44px; height: 44px;
-            transition: color 0.3s;
-            display: flex; align-items: center; justify-content: center;
-        }
+        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); align-items: center; }
+        #chat-input { flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none; transition: border-color 0.3s, box-shadow 0.3s; }
+        .chat-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; width: 44px; height: 44px; transition: color 0.3s; display: flex; align-items: center; justify-content: center; }
         .chat-btn:hover { color: var(--accent-color); }
-
-        /* NEW: Button visibility logic */
         .chat-btn.hidden { display: none !important; }
         .chat-input-area:not(.typing) #send-btn { display: none; }
         .chat-input-area.typing #mic-btn { display: none; }
         .chat-input-area.typing #send-btn { display: flex; }
-        .chat-input-area.bot-speaking #mic-btn,
-        .chat-input-area.bot-speaking #send-btn { display: none; }
+        .chat-input-area.bot-speaking #mic-btn, .chat-input-area.bot-speaking #send-btn { display: none; }
         .chat-input-area.bot-speaking #stop-btn { display: flex; }
         .chat-input-area:not(.bot-speaking) #stop-btn { display: none; }
-
-        /* Mic listening styles */
-        #mic-btn.listening {
-            color: var(--chatbot-accent-color);
-            animation: pulse 1.5s infinite;
-        }
+        #mic-btn.listening { color: var(--chatbot-accent-color); animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        .chat-input-area.mic-active #chat-input {
-            border-color: var(--chatbot-accent-color);
-            box-shadow: 0 0 5px var(--glow-color);
-        }
+        .chat-input-area.mic-active #chat-input { border-color: var(--chatbot-accent-color); box-shadow: 0 0 5px var(--glow-color); }
 
         @media (max-width: 768px) {
+            .header-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
             .header-content h1 { font-size: 2.5rem; }
+            .header-links { justify-content: center; }
+            .avatar-container { margin-top: 30px; grid-row-start: 1; }
             .experience-item { grid-template-columns: 1fr; gap: 20px; }
             .chat-window { bottom: 80px; right: 15px; }
             .chatbot-fab { bottom: 20px; right: 20px; }
@@ -217,15 +131,19 @@
 
 <div class="container">
     <header>
-        <div class="header-content reveal">
-            <h1>Rohanraje Bhosale</h1>
-            <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
-            <div class="header-links">
-                <a href="mailto:therohanrajebhosale@gmail.com"><i class="fas fa-envelope"></i> therohanrajebhosale@gmail.com</a>
-                <a href="https://linkedin.com/in/rohanraje-bhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="tel:+15085095706"><i class="fas fa-phone"></i> +1 (508)-509-5706</a>
-                <!-- NEW: Resume Button -->
-                <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
+        <div class="header-grid reveal">
+            <div class="header-content">
+                <h1>Rohanraje Bhosale</h1>
+                <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
+                <div class="header-links">
+                    <a href="mailto:therohanrajebhosale@gmail.com"><i class="fas fa-envelope"></i> therohanrajebhosale@gmail.com</a>
+                    <a href="https://linkedin.com/in/rohanraje-bhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
+                    <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
+                </div>
+            </div>
+            <div class="avatar-container">
+                <img src="avatar1.png" alt="Rohanraje Bhosale Avatar" class="avatar-image">
             </div>
         </div>
     </header>
@@ -274,34 +192,56 @@
                 <h2>Projects</h2>
             </div>
             <div class="projects-grid">
-                <!-- NEW: ROHbot Project Card -->
-                <a href="#" class="project-card reveal" onclick="document.getElementById('chatbot-fab').click(); return false;">
+                <a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-journey-into-conversational-ai-with-rag-and-voice-cloning-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
                     <h3>Conversational AI Assistant (ROHbot)</h3>
                     <p>This portfolio's interactive assistant. A full-stack RAG system using Gemini for reasoning, Supabase/pgvector for knowledge storage, and ElevenLabs for voice cloning. Ask it about me!</p>
                     <div class="project-tags">
                         <span class="project-tag">RAG</span><span class="project-tag">Gemini</span><span class="project-tag">Supabase</span><span class="project-tag">Vercel</span><span class="project-tag">ElevenLabs</span>
                     </div>
                 </a>
-                <a href="#" class="project-card reveal">
-                    <h3>Agentic AI-Powered Customer Support</h3>
-                    <p>Built a CrewAI-powered system with RAG and ChromaDB, automating 85% of Tier-1 queries and cutting escalation rates by 40%.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">CrewAI</span><span class="project-tag">RAG</span><span class="project-tag">GPT-4</span><span class="project-tag">LLM</span>
-                    </div>
-                </a>
-                <a href="#" class="project-card reveal">
+                <a href="https://medium.com/@rohanrajebhosale/designing-an-agentic-framework-for-real-time-market-intelligence-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
                     <h3>Agentic AI-Driven Market Intelligence</h3>
                     <p>Designed a LangGraph/LangChain agent processing 10K+ docs daily from 200+ sources with 92% accuracy in trend forecasting.</p>
                     <div class="project-tags">
                         <span class="project-tag">LangGraph</span><span class="project-tag">Streamlit</span><span class="project-tag">BigQuery</span><span class="project-tag">Agentic AI</span>
                     </div>
                 </a>
-                <a href="#" class="project-card reveal">
+                <a href="https://medium.com/@rohanrajebhosale/building-an-iot-smart-mirror-from-scratch-with-raspberry-pi-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
+                    <h3>IoT Smart Mirror (Raspberry Pi)</h3>
+                    <p>Engineered a custom smart mirror with Raspberry Pi, integrating real-time data APIs for weather, stocks, and news into a futuristic, ambient display.</p>
+                    <div class="project-tags">
+                        <span class="project-tag">Raspberry Pi</span><span class="project-tag">IoT</span><span class="project-tag">JavaScript</span><span class="project-tag">API Integration</span>
+                    </div>
+                </a>
+                <a href="https://medium.com/@rohanrajebhosale/end-to-end-ml-pipeline-for-skin-disease-detection-in-r-placeholder" target="_blank" rel="noopener noreferrer" class="project-card reveal">
                     <h3>ML Framework for Skin Disease Detection</h3>
                     <p>Developed an end-to-end R-based pipeline for early skin cancer detection, improving diagnostic precision by 22%.</p>
                     <div class="project-tags">
                         <span class="project-tag">R</span><span class="project-tag">ML Pipeline</span><span class="project-tag">caret</span><span class="project-tag">Image Analysis</span>
                     </div>
+                </a>
+            </div>
+        </section>
+
+        <section id="writings" class="section">
+            <div class="section-header reveal">
+                <h2>Selected Writings & Case Studies</h2>
+            </div>
+            <div class="articles-grid">
+                <a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank" rel="noopener noreferrer" class="article-card reveal">
+                    <h3>Case Study: Building ROHbot, my AI Twin</h3>
+                    <p>A deep dive into the architecture of this portfolio's AI assistant, covering the RAG pipeline, serverless functions, and the challenges of creating a real-time voice experience.</p>
+                    <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
+                </a>
+                <a href="https://medium.com/@rohanrajebhosale/my-first-foray-into-agentic-ai-building-a-multi-agent-system-for-financial-research-aded3edfebfb" target="_blank" rel="noopener noreferrer" class="article-card reveal">
+                    <h3>Case Study: Agentic Market Intelligence System</h3>
+                    <p>Exploring the use of LangGraph and real-time data pipelines to build an autonomous agent capable of forecasting market trends with high accuracy.</p>
+                    <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
+                </a>
+                <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer" class="article-card reveal">
+                    <h3>Explore All My Articles</h3>
+                    <p>Visit my Medium profile to read all my technical write-ups, tutorials, and thoughts on the latest trends in AI and data science.</p>
+                    <span class="read-more">View Profile on Medium <i class="fas fa-arrow-right"></i></span>
                 </a>
             </div>
         </section>
@@ -388,16 +328,14 @@
     <div class="chat-input-area" id="chat-input-area">
         <input type="text" id="chat-input" placeholder="Ask or press the mic...">
         <button class="chat-btn" id="mic-btn"><i class="fas fa-microphone"></i></button>
-        <button class="chat-btn" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        <button class="chat-btn hidden" id="send-btn"><i class="fas fa-paper-plane"></i></button>
         <button class="chat-btn hidden" id="stop-btn"><i class="fas fa-stop-circle"></i></button>
     </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
-
-<!-- ======================= FINAL SCRIPT BLOCK WITH ALL UX UPGRADES ======================= -->
 <script>
-    // --- SCROLL REVEAL & PARTICLES (Unchanged) ---
+    // --- SCROLL REVEAL & PARTICLES ---
     document.addEventListener('DOMContentLoaded', () => {
         const revealElements = document.querySelectorAll('.reveal');
         const observer = new IntersectionObserver(entries => {
@@ -549,7 +487,6 @@
                 });
         }
 
-        // --- Voice Input (Speech Recognition) Logic ---
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         const recognition = SpeechRecognition ? new SpeechRecognition() : null;
         if (recognition) {
