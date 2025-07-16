@@ -13,7 +13,7 @@
     <style>
         :root {
             --background-color: #0c0c0e;
-            --surface-color: rgba(26, 26, 30, 0.5);
+            --surface-color: rgba(26, 26, 30, 0.7);
             --border-color: rgba(255, 255, 255, 0.1);
             --text-color: #f0f0f0;
             --subtle-text-color: #a0a0a0;
@@ -23,455 +23,261 @@
             --glow-color: rgba(0, 122, 255, 0.7);
         }
         *, *::before, *::after { box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: auto; }
 
-        @keyframes aurora {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        @keyframes aurora { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+        @keyframes gradient-flow { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
         body {
             background-color: var(--background-color);
             color: var(--text-color);
             font-family: 'Inter', sans-serif;
-            line-height: 1.7;
-            margin: 0;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            position: relative;
-            overflow-x: hidden;
+            line-height: 1.7; margin: 0;
+            -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+            position: relative; overflow-x: hidden;
         }
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: radial-gradient(circle at 10% 20%, rgba(0, 123, 255, 0.15), transparent 40%),
-            radial-gradient(circle at 80% 90%, rgba(138, 43, 226, 0.15), transparent 40%);
-            filter: blur(50px);
-            animation: aurora 20s infinite linear;
-            z-index: -2;
+            content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(0, 123, 255, 0.1), transparent 40%),
+            radial-gradient(circle at 80% 90%, rgba(138, 43, 226, 0.1), transparent 40%);
+            filter: blur(50px); animation: aurora 20s infinite linear; z-index: -2;
         }
-
         #tsparticles { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
         .container { max-width: 960px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 1; }
-        .section { padding: 120px 0; border-top: 1px solid var(--border-color); }
 
-        .section-header h2 {
-            font-size: 2.2rem; font-weight: 900;
-            margin: 0 0 15px 0; display: inline-block; position: relative;
-            background: linear-gradient(90deg, #eee, #999);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* --- STATIC HERO SECTION --- */
+        #hero-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 5; /* Keep it on top of particles */
         }
-        .section-header h2::after {
-            content: ''; position: absolute; bottom: -8px; left: 0; right: 0;
-            width: 100%; height: 3px;
-            background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s ease-out 0.3s;
-        }
-        .visible .section-header h2::after { transform: scaleX(0.25); }
-
-        header { padding: 120px 0; min-height: 80vh; display: flex; align-items: center; }
-        .header-grid { display: grid; grid-template-columns: 2fr 1fr; align-items: center; gap: 60px; }
-        .header-content h1 {
-            font-size: 3.8rem; font-weight: 900; margin: 0; line-height: 1.1;
-            background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2), var(--accent-color-1));
-            background-size: 200% auto;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradient-flow 7s ease infinite;
-        }
+        .header-grid { display: grid; grid-template-columns: 1fr 1fr; align-items: center; gap: 60px; width: 100%; max-width: 960px; position: relative; }
+        .header-content h1 { font-size: 3.8rem; font-weight: 900; margin: 0; line-height: 1.1; white-space: nowrap; background: linear-gradient(90deg, var(--accent-color-1), var(--accent-color-2), var(--accent-color-1)); background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: gradient-flow 7s ease infinite; }
         .header-content .subtitle { font-size: 1.25rem; color: var(--subtle-text-color); margin: 20px 0 0 0; max-width: 600px; }
         .header-links { margin-top: 35px; display: flex; flex-wrap: wrap; gap: 25px; align-items: center; }
-        .header-links a { color: var(--subtle-text-color); text-decoration: none; transition: color 0.3s; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; position: relative; }
-        .header-links a:hover { color: #fff; }
-        .header-links a:not(.resume-btn)::after {
-            content: ''; position: absolute; width: 100%;
-            transform: scaleX(0); height: 1px;
-            bottom: -3px; left: 0; background-color: #fff;
-            transform-origin: bottom right; transition: transform 0.25s ease-out;
-        }
-        .header-links a:not(.resume-btn):hover::after { transform: scaleX(1); transform-origin: bottom left; }
-
-        .resume-btn { background-color: var(--accent-color-1); border: 1px solid var(--accent-color-1); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: 500; font-size: 0.9rem; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 8px; }
-        .resume-btn:hover { background-color: transparent; color: var(--accent-color-1); transform: translateY(-2px); }
-
-        .avatar-container { width: 240px; height: 240px; border-radius: 50%; position: relative; justify-self: center; border: 2px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 4px var(--background-color), 0 0 0 5px var(--border-color); overflow: hidden; }
-        .avatar-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; transition: opacity 0.4s ease-in-out; }
-        .avatar-container .avatar-top { opacity: 1; }
+        .header-links a { color: var(--subtle-text-color); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; font-weight: 500; }
+        .resume-btn { background-color: var(--accent-color-1); border: 1px solid var(--accent-color-1); color: white; padding: 10px 20px; border-radius: 6px; }
+        .avatar-container { width: 280px; height: 280px; border-radius: 50%; position: relative; justify-self: center; border: 2px solid var(--border-color); box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 0 4px var(--background-color), 0 0 0 5px var(--border-color); overflow: hidden; cursor: pointer; transition: transform 0.3s, box-shadow 0.3s; }
+        .avatar-container:hover { transform: scale(1.05); box-shadow: 0 15px 50px rgba(0,123,255,0.3), 0 0 0 4px var(--background-color), 0 0 0 5px var(--accent-color-1); }
+        .avatar-image { width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; }
+        .avatar-container .avatar-top { opacity: 1; transition: opacity 0.4s ease-in-out; }
         .avatar-container:hover .avatar-top { opacity: 0; }
+        .avatar-prompt { position: absolute; display: flex; align-items: center; gap: 15px; left: 100%; top: 50%; transform: translateY(-50%) translateX(20px); background: var(--surface-color); backdrop-filter: blur(5px); padding: 10px 20px; border-radius: 8px; border: 1px solid var(--border-color); font-weight: 500; white-space: nowrap; }
+        .avatar-prompt svg { width: 40px; height: 40px; fill: var(--text-color); transform: scaleX(-1); }
 
-        .experience-item { padding: 20px; border-left: 3px solid var(--border-color); transition: border-color 0.3s; margin-bottom: 40px; }
-        .experience-item:hover { border-left-color: var(--accent-color-1); }
-        .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
-        .experience-item-meta p { color: var(--subtle-text-color); margin: 0; }
-        .experience-item-desc ul { list-style: none; padding: 10px 0 0 0; margin: 0; }
-        .experience-item-desc li { padding-left: 20px; position: relative; margin-bottom: 10px; }
-        .experience-item-desc li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-color-1); }
+        /* --- SCROLLYTELLING CONTAINER & SLIDES --- */
+        #story-container { height: 800vh; position: relative; }
+        #story-pin-target { height: 100vh; width: 100%; overflow: hidden; position: sticky; top: 0; }
+        .story-slide {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            padding: 20px; opacity: 0; visibility: hidden;
+        }
+        .story-slide h2 { font-size: 3rem; font-weight: 900; margin-bottom: 30px; background: linear-gradient(90deg, #eee, #999); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .card {
-            background: var(--surface-color);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color);
-            padding: 30px; border-radius: 12px;
-            transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
-            display: flex; flex-direction: column;
+        /* --- CHAT WINDOW MODAL --- */
+        .chat-window {
+            position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9);
+            width: 400px; max-width: 90vw; height: 600px; max-height: 80vh;
+            background-color: rgba(12, 12, 14, 0.85);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color); border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            z-index: 1000; display: flex; flex-direction: column; overflow: hidden;
+            opacity: 0; visibility: hidden;
         }
-        .card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-        }
-        .projects-grid, .articles-grid, .publications-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
-        .card h3 { font-size: 1.2rem; margin: 0 0 10px 0; }
-        .card h3 a { text-decoration: none; color: inherit; }
-        .card h3 a:hover { color: var(--accent-color-1); }
+        .chat-header { padding: 15px 20px; background-color: rgba(17, 17, 17, 0.9); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; cursor: move; }
+        .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 500; }
+        .chat-close-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 24px; cursor: pointer; padding: 5px; line-height: 1; }
+        .chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
+        .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
+        .chat-message.user { background-color: var(--chatbot-accent-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+        .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
+        .chat-suggestions { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px 20px 10px; border-bottom: 1px solid var(--border-color); }
+        .suggestion-btn { background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--subtle-text-color); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
+        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); align-items: center; }
+        #chat-input { flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none; }
+        .chat-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; }
+
+        .about-text { font-size: 1.2rem; line-height: 1.8; max-width: 750px; text-align: center; color: var(--subtle-text-color);}
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; width: 100%; max-width: 960px; }
+        .card { background: var(--surface-color); backdrop-filter: blur(10px); border: 1px solid var(--border-color); padding: 30px; border-radius: 12px; display: flex; flex-direction: column; text-decoration: none; text-align: left; }
+        .card h3 { font-size: 1.2rem; margin: 0 0 10px 0; color: var(--text-color); }
         .card p { color: var(--subtle-text-color); font-size: 0.9rem; margin: 0 0 15px 0; flex-grow: 1; }
         .card-footer { margin-top: auto; padding-top: 15px; border-top: 1px solid var(--border-color); }
         .project-tags { display: flex; flex-wrap: wrap; gap: 8px; }
         .project-tag { background-color: rgba(0,0,0,0.3); color: var(--subtle-text-color); font-size: 0.75rem; padding: 4px 10px; border-radius: 15px; border: 1px solid var(--border-color); }
         .project-link { margin-top: 20px; font-size: 0.9rem; font-weight: 500; color: var(--subtle-text-color); text-decoration: none; display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s; }
         .project-link:hover { color: var(--accent-color-1); }
-        .article-card .read-more { font-weight: 500; color: var(--text-color); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-top: auto; }
-        .article-card:hover .read-more { color: var(--accent-color-1); }
-        .article-card .read-more i { transition: transform 0.3s; }
-        .article-card:hover .read-more i { transform: translateX(5px); }
-
-        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 50px; }
-        .skills-category h3 { font-size: 1.1rem; font-weight: 500; color: var(--text-color); border-bottom: 1px solid var(--border-color); padding-bottom: 10px; margin: 0 0 15px 0; }
-        .skills-category ul { list-style: none; padding: 0; margin: 0; color: var(--subtle-text-color); font-size: 0.95rem; }
-
-        .reveal { opacity: 0; transition: opacity 1s, transform 1s; }
-        .reveal.fade-in-up { transform: translateY(50px); }
-        .reveal.slide-in-left { transform: translateX(-50px); }
-        .visible { opacity: 1; transform: translateX(0) translateY(0); }
-
-        /* Chatbot Styles */
-        @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px 5px var(--glow-color), 0 0 8px 2px var(--glow-color) inset; } 50% { box-shadow: 0 0 35px 10px var(--glow-color), 0 0 12px 4px var(--glow-color) inset; } }
-        @keyframes nudge-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
-        .floating-prompt { position: fixed; bottom: 50px; right: 105px; display: flex; align-items: center; gap: 10px; padding: 8px 15px; background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(5px); border: 1px solid var(--border-color); border-radius: 20px; color: var(--text-color); font-size: 0.9rem; font-weight: 500; z-index: 998; pointer-events: none; animation: nudge-right 2.5s infinite ease-in-out; transition: opacity 0.3s ease; }
-        .floating-prompt svg { width: 24px; height: 24px; fill: var(--text-color); }
-        .floating-prompt.hidden { opacity: 0; }
-        .chatbot-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background-color: var(--chatbot-accent-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; transition: transform 0.3s ease; animation: pulse-glow 3s infinite ease-in-out; }
-        .chatbot-fab:hover { transform: scale(1.1); animation-play-state: paused; }
-        .chatbot-fab i { font-size: 24px; color: white; }
-        .chat-window { display: none; position: fixed; bottom: 100px; right: 30px; width: 370px; max-width: 90vw; height: 550px; max-height: 70vh; background-color: rgba(26, 26, 26, 0.85); backdrop-filter: blur(10px); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); z-index: 999; flex-direction: column; overflow: hidden; font-family: 'Inter', sans-serif; }
-        .chat-header { padding: 15px 20px; background-color: rgba(17, 17, 17, 0.9); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-        .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 500; }
-        .chat-close-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; }
-        .chat-messages { flex-grow: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; }
-        .chat-message { max-width: 80%; padding: 10px 15px; border-radius: 18px; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; }
-        .chat-message.user { background-color: var(--chatbot-accent-color); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
-        .chat-message.bot { background-color: #333; color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 4px; }
-        .chat-suggestions { display: flex; flex-wrap: wrap; gap: 10px; padding: 15px; border-bottom: 1px solid var(--border-color); transition: all 0.3s ease-out; }
-        .suggestion-btn { background-color: var(--surface-color); border: 1px solid var(--border-color); color: var(--subtle-text-color); padding: 8px 15px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; transition: background-color 0.3s, color 0.3s; }
-        .suggestion-btn:hover { background-color: var(--border-color); color: var(--text-color); }
-        .chat-suggestions.hidden { display: none; }
-        .chat-input-area { display: flex; padding: 10px; border-top: 1px solid var(--border-color); background-color: rgba(17, 17, 17, 0.9); align-items: center; }
-        #chat-input { flex-grow: 1; background-color: var(--surface-color); border: 1px solid var(--border-color); border-radius: 20px; padding: 10px 15px; color: var(--text-color); font-size: 0.9rem; outline: none; transition: border-color 0.3s, box-shadow 0.3s; }
-        .chat-btn { background: none; border: none; color: var(--subtle-text-color); font-size: 20px; cursor: pointer; width: 44px; height: 44px; transition: color 0.3s; display: flex; align-items: center; justify-content: center; }
-        .chat-btn:hover { color: var(--accent-color); }
-        .chat-btn.hidden { display: none !important; }
-        .chat-input-area:not(.typing) #send-btn { display: none; }
-        .chat-input-area.typing #mic-btn { display: none; }
-        .chat-input-area.typing #send-btn { display: flex; }
-        .chat-input-area.bot-speaking #mic-btn, .chat-input-area.bot-speaking #send-btn { display: none; }
-        .chat-input-area.bot-speaking #stop-btn { display: flex; }
-        .chat-input-area:not(.bot-speaking) #stop-btn { display: none; }
-        #mic-btn.listening { color: var(--chatbot-accent-color); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-        .chat-input-area.mic-active #chat-input { border-color: var(--chatbot-accent-color); box-shadow: 0 0 5px var(--glow-color); }
-        .blinking-cursor { animation: blink 1s step-end infinite; }
-        @keyframes blink { from, to { color: transparent; } 50% { color: var(--text-color); } }
-
-        @media (max-width: 768px) {
-            .header-grid { grid-template-columns: 1fr; gap: 40px; text-align: center; }
-            .header-content h1 { font-size: 2.8rem; }
-            .header-links { justify-content: center; }
-            .avatar-container { margin-top: 30px; grid-row-start: 1; }
-            .experience-item { grid-template-columns: 1fr; gap: 20px; }
-            .chat-window { bottom: 80px; right: 15px; }
-            .chatbot-fab { bottom: 20px; right: 20px; }
-            .floating-prompt { display: none; }
-        }
+        .experience-item { padding: 20px; border-left: 3px solid var(--border-color); margin-bottom: 20px; background: var(--surface-color); border-radius: 8px; text-align: left; }
+        .experience-item-meta h3 { font-size: 1.2rem; font-weight: 700; margin: 0 0 5px 0; }
+        .experience-item-meta p { color: var(--subtle-text-color); margin: 0; }
+        .experience-item-desc ul { list-style: none; padding: 10px 0 0 0; margin: 0; }
+        .experience-item-desc li { padding-left: 20px; position: relative; margin-bottom: 10px; }
+        .experience-item-desc li::before { content: '✓'; position: absolute; left: 0; color: var(--accent-color-1); }
+        .read-more { font-weight: 500; color: var(--text-color); display: inline-flex; align-items: center; gap: 8px; text-decoration: none; margin-top: auto; }
     </style>
 </head>
 <body>
 
 <div id="tsparticles"></div>
 
-<div class="container">
-    <header>
-        <div class="header-grid">
-            <div class="header-content reveal fade-in-up">
-                <h1>Rohanraje Bhosale</h1>
-                <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
-                <div class="header-links">
-                    <a href="https://www.linkedin.com/in/rohanrajebhosale/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                    <a href="https://github.com/RohanrajeBhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
-                    <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
-                    <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
-                </div>
+<!-- STATIC HERO SECTION -->
+<header id="hero-section">
+    <div class="header-grid">
+        <div class="header-content">
+            <h1>Rohanraje Bhosale</h1>
+            <p class="subtitle">Data Scientist specializing in LLM & RAG applications, with a strong foundation in AI/ML engineering, cloud platforms, and end-to-end data solutions.</p>
+            <div class="header-links">
+                <a href="https://www.linkedin.com/in/rohanrajebhosale/" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://github.com/RohanrajeBhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-github"></i> GitHub</a>
+                <a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer"><i class="fab fa-medium"></i> Medium</a>
+                <a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a>
             </div>
-            <div class="avatar-container reveal slide-in-left">
+        </div>
+        <div style="position: relative; justify-self: center;">
+            <div id="avatar-chat-trigger" class="avatar-container">
                 <img src="avatar2.png" alt="Rohanraje Bhosale Avatar 2" class="avatar-image avatar-bottom">
                 <img src="avatar1.png" alt="Rohanraje Bhosale Avatar 1" class="avatar-image avatar-top">
             </div>
+            <div class="avatar-prompt">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"></path></svg>
+                <span>Interview me here</span>
+            </div>
         </div>
-    </header>
-
-    <main>
-        <section id="about" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>About Me</h2>
-            </div>
-            <p class="about-text reveal fade-in-up" style="font-size: 1.2rem; line-height: 1.8; max-width: 750px;">I am a data professional with a passion for building intelligent systems. My experience spans from academic instruction in core data principles to engineering scalable ML pipelines and developing state-of-the-art agentic AI systems. I thrive on translating complex technical challenges into robust, impactful, and actionable business solutions.</p>
-        </section>
-
-        <section id="experience" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Work Experience</h2>
-            </div>
-            <div class="experience-item reveal slide-in-left">
-                <div class="experience-item-meta">
-                    <h3>Sahyadri Polytechnic Sawarde</h3>
-                    <p>Assistant Professor</p>
-                    <p>June 2022 – January 2024</p>
-                </div>
-                <div class="experience-item-desc">
-                    <ul>
-                        <li>Designed and delivered DBMS and Python courses to 150+ undergraduates annually, integrating SQL, ETL, Pandas, and NumPy.</li>
-                        <li>Developed automated grading tools and plagiarism detectors to uphold academic integrity and accelerate feedback by 60%.</li>
-                        <li>Mentored 12+ student tech groups through hackathons and research expos, guiding winning teams in 3 institutional-level innovation competitions.</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="experience-item reveal slide-in-left" style="transition-delay: 0.1s;">
-                <div class="experience-item-meta">
-                    <h3>Trismus Healthcare Technologies</h3>
-                    <p>Machine Learning Engineer Intern</p>
-                    <p>January 2022 – June 2022</p>
-                </div>
-                <div class="experience-item-desc">
-                    <ul>
-                        <li>Engineered scalable preprocessing pipelines for high-resolution dental image datasets, reducing training time by 35%.</li>
-                        <li>Designed and evaluated CNN architectures for image classification, creating dashboards that translated technical results into business insights.</li>
-                        <li>Built quality assurance protocols and data audit tools to maintain dataset integrity and reproducibility across ML workflows.</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="projects" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Projects</h2>
-            </div>
-            <div class="projects-grid">
-                <div class="card project-card reveal fade-in-up">
-                    <h3><a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank" rel="noopener noreferrer">Conversational AI Assistant (ROHbot)</a></h3>
-                    <p>This portfolio's interactive assistant. A full-stack RAG system using Gemini, Supabase/pgvector, and ElevenLabs. Ask it about me!</p>
-                    <div class="card-footer">
-                        <div class="project-tags">
-                            <span class="project-tag">RAG</span><span class="project-tag">Gemini</span><span class="project-tag">Supabase</span><span class="project-tag">Vercel</span>
-                        </div>
-                        <a href="https://github.com/RohanrajeBhosale/ROHbot" target="_blank" rel="noopener noreferrer" class="project-link">
-                            <i class="fab fa-github"></i> View on GitHub
-                        </a>
-                    </div>
-                </div>
-                <div class="card project-card reveal fade-in-up" style="transition-delay: 0.1s;">
-                    <h3><a href="https://medium.com/@rohanrajebhosale" target="_blank" rel="noopener noreferrer">Agentic AI for Customer Support</a></h3>
-                    <p>Built a production-ready conversational AI using RAG and foundation models to automate 85% of Tier-1 queries and reduce escalations by 40%.</p>
-                    <div class="card-footer">
-                        <div class="project-tags">
-                            <span class="project-tag">RAG</span><span class="project-tag">GPT-4</span><span class="project-tag">NLU</span>
-                        </div>
-                        <a href="https://github.com/your-username/customer-support-agent-placeholder" target="_blank" rel="noopener noreferrer" class="project-link">
-                            <i class="fab fa-github"></i> View on GitHub
-                        </a>
-                    </div>
-                </div>
-                <div class="card project-card reveal fade-in-up" style="transition-delay: 0.2s;">
-                    <h3><a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank" rel="noopener noreferrer">F1 Data Collection Utility</a></h3>
-                    <p>A user-friendly Streamlit web app to automate downloading and storing Formula 1 race data using the FastF1 library, ready for analysis.</p>
-                    <div class="card-footer">
-                        <div class="project-tags">
-                            <span class="project-tag">Python</span><span class="project-tag">Streamlit</span><span class="project-tag">Data Engineering</span>
-                        </div>
-                        <a href="https://github.com/RohanrajeBHosale/f1-data-utility" target="_blank" rel="noopener noreferrer" class="project-link">
-                            <i class="fab fa-github"></i> View on GitHub
-                        </a>
-                    </div>
-                </div>
-                <div class="card project-card reveal fade-in-up" style="transition-delay: 0.3s;">
-                    <h3><a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank" rel="noopener noreferrer">IoT Smart Mirror (Raspberry Pi)</a></h3>
-                    <p>Engineered a custom smart mirror with Raspberry Pi, integrating real-time data APIs for a futuristic, ambient display.</p>
-                    <div class="card-footer">
-                        <div class="project-tags">
-                            <span class="project-tag">Raspberry Pi</span><span class="project-tag">IoT</span><span class="project-tag">JavaScript</span>
-                        </div>
-                        <a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank" rel="noopener noreferrer" class="project-link">
-                            <i class="fab fa-youtube"></i> Watch Demo
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="writings" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Selected Writings</h2>
-            </div>
-            <div class="articles-grid">
-                <a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank" rel="noopener noreferrer" class="card article-card reveal fade-in-up">
-                    <h3>Case Study: Building ROHbot, my AI Twin</h3>
-                    <p>A deep dive into the architecture of this portfolio's AI assistant, covering the RAG pipeline, serverless functions, and the challenges of creating a real-time voice experience.</p>
-                    <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
-                </a>
-                <a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank" rel="noopener noreferrer" class="card article-card reveal fade-in-up" style="transition-delay: 0.1s;">
-                    <h3>From Zero to F1 Data: Building a Web App with Python</h3>
-                    <p>A tutorial on creating a user-friendly data collection tool using Streamlit and the FastF1 library, making complex data accessible to everyone.</p>
-                    <span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span>
-                </a>
-            </div>
-        </section>
-
-        <section id="skills" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Technical Skills</h2>
-            </div>
-            <div class="skills-grid">
-                <div class="skills-category reveal fade-in-up">
-                    <h3>Languages</h3>
-                    <ul><li>Python, R, SQL, MATLAB</li></ul>
-                </div>
-                <div class="skills-category reveal fade-in-up" style="transition-delay: 0.1s;">
-                    <h3>AI/ML Frameworks</h3>
-                    <ul><li>TensorFlow, PyTorch, Scikit-learn, Hugging Face, LangChain, LangGraph, CrewAI</li></ul>
-                </div>
-                <div class="skills-category reveal fade-in-up" style="transition-delay: 0.2s;">
-                    <h3>LLM & RAG</h3>
-                    <ul><li>OpenAI API (GPT-4), Gemini, Prompt Engineering, RAG, FAISS, Pinecone</li></ul>
-                </div>
-                <div class="skills-category reveal fade-in-up" style="transition-delay: 0.3s;">
-                    <h3>Cloud Platforms</h3>
-                    <ul><li>AWS (S3, Glue, Lambda, Athena, Redshift), Azure, GCP, Vercel</li></ul>
-                </div>
-                <div class="skills-category reveal fade-in-up" style="transition-delay: 0.4s;">
-                    <h3>Data Engineering & ETL</h3>
-                    <ul><li>Apache Spark, AWS Glue, Azure Data Factory, Apache Airflow</li></ul>
-                </div>
-                <div class="skills-category reveal fade-in-up" style="transition-delay: 0.5s;">
-                    <h3>Databases & Querying</h3>
-                    <ul><li>PostgreSQL (pgvector), MySQL, MS SQL Server, MongoDB, Supabase</li></ul>
-                </div>
-            </div>
-        </section>
-
-        <section id="education" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Education</h2>
-            </div>
-            <div class="experience-item reveal slide-in-left">
-                <div class="experience-item-meta">
-                    <h3>University of Massachusetts Dartmouth</h3>
-                    <p>Dartmouth, MA</p>
-                </div>
-                <div class="experience-item-desc">
-                    <h3 style="margin-top:0;">Master's in Data Science (Expected)</h3>
-                    <p>January 2026</p>
-                </div>
-            </div>
-            <div class="experience-item reveal slide-in-left" style="transition-delay: 0.1s;">
-                <div class="experience-item-meta">
-                    <h3>Symbiosis International University</h3>
-                    <p>MH, India</p>
-                </div>
-                <div class="experience-item-desc">
-                    <h3 style="margin-top:0;">B.Tech in Computer Science and Engineering</h3>
-                    <p>June 2022</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="publications" class="section">
-            <div class="section-header reveal fade-in-up">
-                <h2>Publications</h2>
-            </div>
-            <div class="publications-grid">
-                <a href="https://digitalcommons.unl.edu/libphilprac/5767/" target="_blank" rel="noopener noreferrer" class="card article-card reveal fade-in-up">
-                    <h3>Bibliometric Analysis of Machine Learning and Text Mining Algorithms for Diagnosis of Leukemia</h3>
-                    <p>This research involved a bibliometric analysis of the leukemia research area using publication data from Scopus. We identified the most productive journals, countries, and authors, and constructed a citation network to map international collaboration.</p>
-                    <span class="read-more">View Publication <i class="fas fa-arrow-right"></i></span>
-                </a>
-            </div>
-        </section>
-
-    </main>
-
-    <footer style="text-align:center; padding: 40px 20px; border-top: 1px solid var(--border-color); color: var(--subtle-text-color); font-size: 0.9rem;">
-        <p>© 2024 Rohanraje Bhosale. Designed with a focus on clarity and professionalism.</p>
-    </footer>
-</div>
-
-<div class="floating-prompt" id="floating-prompt">
-    <span>Interview me here</span>
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M13.1717 12.0001L8.22192 7.05029L9.63614 5.63608L16.0001 12.0001L9.63614 18.364L8.22192 16.9498L13.1717 12.0001Z"></path></svg>
-</div>
-
-<div class="chatbot-fab" id="chatbot-fab">
-    <i class="fas fa-brain"></i>
-</div>
-
-<div class="chat-window" id="chat-window">
-    <div class="chat-header">
-        <h3>ROHbot</h3>
-        <button class="chat-close-btn" id="chat-close-btn">×</button>
     </div>
+</header>
+
+<!-- SCROLLYTELLING STARTS HERE -->
+<div id="story-container">
+    <div id="story-pin-target">
+        <!-- The slides are positioned inside this pinned container -->
+        <div class="story-slide" id="slide-about">
+            <div class="container"><h2>About Me</h2><p class="about-text">I am a data professional with a passion for building intelligent systems. My experience spans from academic instruction in core data principles to engineering scalable ML pipelines and developing state-of-the-art agentic AI systems. I thrive on translating complex technical challenges into robust, impactful, and actionable business solutions.</p></div>
+        </div>
+        <div class="story-slide" id="slide-experience">
+            <div class="container"><h2>Work Experience</h2><div class="card-grid"><div class="experience-item"><div class="experience-item-meta"><h3>Sahyadri Polytechnic Sawarde</h3><p>Assistant Professor | June 2022 – Jan 2024</p></div><div class="experience-item-desc"><ul><li>Designed and delivered DBMS and Python courses to 150+ undergraduates.</li><li>Mentored 12+ student tech groups through hackathons and research expos.</li></ul></div></div><div class="experience-item"><div class="experience-item-meta"><h3>Trismus Healthcare Technologies</h3><p>Machine Learning Engineer Intern | Jan 2022 – June 2022</p></div><div class="experience-item-desc"><ul><li>Engineered scalable preprocessing pipelines for dental image datasets.</li><li>Designed and evaluated CNN architectures for image classification.</li></ul></div></div></div></div>
+        </div>
+        <div class="story-slide" id="slide-projects">
+            <div class="container"><h2>Projects</h2><div class="card-grid">
+                <div class="card"><h3><a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank">Conversational AI Assistant</a></h3><p>This portfolio's interactive assistant. A full-stack RAG system using Gemini, Supabase/pgvector, and ElevenLabs.</p><div class="card-footer"><div class="project-tags"><span class="project-tag">RAG</span><span class="project-tag">Gemini</span></div><a href="https://github.com/RohanrajeBhosale/ROHbot" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a></div></div>
+                <div class="card"><h3><a href="https://medium.com/@rohanrajebhosale" target="_blank">Agentic AI for Customer Support</a></h3><p>Built a production-ready conversational AI using RAG to automate 85% of Tier-1 queries.</p><div class="card-footer"><div class="project-tags"><span class="project-tag">RAG</span><span class="project-tag">GPT-4</span></div><a href="https://github.com/RohanrajeBhosale" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a></div></div>
+                <div class="card"><h3><a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank">F1 Data Collection Utility</a></h3><p>A user-friendly Streamlit web app to automate downloading and storing Formula 1 race data.</p><div class="card-footer"><div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">Streamlit</span></div><a href="https://github.com/RohanrajeBHosale/f1-data-utility" target="_blank" class="project-link"><i class="fab fa-github"></i> View on GitHub</a></div></div>
+                <div class="card"><h3><a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank">IoT Smart Mirror</a></h3><p>Engineered a custom smart mirror with Raspberry Pi, integrating real-time data APIs.</p><div class="card-footer"><div class="project-tags"><span class="project-tag">Raspberry Pi</span><span class="project-tag">IoT</span></div><a href="https://youtu.be/I6q5SE8XdEg?si=h46uxwJDUHbpP8c8" target="_blank" class="project-link"><i class="fab fa-youtube"></i> Watch Demo</a></div></div>
+            </div></div>
+        </div>
+        <div class="story-slide" id="slide-writings">
+            <div class="container"><h2>Selected Writings</h2><div class="card-grid">
+                <a href="https://medium.com/@rohanrajebhosale/building-rohbot-a-deep-dive-into-my-ai-twin-5770320185a7" target="_blank" class="card"><h3>Case Study: Building ROHbot</h3><p>A deep dive into the architecture of this portfolio's AI assistant, covering the RAG pipeline and serverless functions.</p><span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span></a>
+                <a href="https://medium.com/@rohanrajebhosale/from-zero-to-f1-data-building-a-web-app-with-python-and-streamlit-fdba80c1a94e" target="_blank" class="card"><h3>From Zero to F1 Data</h3><p>A tutorial on creating a user-friendly data collection tool using Streamlit and the FastF1 library.</p><span class="read-more">Read on Medium <i class="fas fa-arrow-right"></i></span></a>
+            </div></div>
+        </div>
+        <div class="story-slide" id="slide-skills">
+            <div class="container"><h2>Technical Skills</h2><div class="card-grid">
+                <div class="card"><h3>AI/ML Frameworks</h3><p>TensorFlow, PyTorch, Scikit-learn, Hugging Face, LangChain, LangGraph, CrewAI</p></div>
+                <div class="card"><h3>LLM & RAG</h3><p>OpenAI API (GPT-4), Gemini, Prompt Engineering, RAG, FAISS, Pinecone</p></div>
+                <div class="card"><h3>Cloud Platforms</h3><p>AWS (S3, Glue, Lambda), Azure, GCP, Vercel</p></div>
+                <div class="card"><h3>Databases</h3><p>PostgreSQL (pgvector), MySQL, MS SQL Server, MongoDB, Supabase</p></div>
+            </div></div>
+        </div>
+        <div class="story-slide" id="slide-education">
+            <div class="container"><h2>Education</h2><div class="card-grid">
+                <div class="card"><h3>University of Massachusetts Dartmouth</h3><p>Master's in Data Science (Expected Jan 2026)</p></div>
+                <div class="card"><h3>Symbiosis International University</h3><p>B.Tech in Computer Science and Engineering (June 2022)</p></div>
+            </div></div>
+        </div>
+        <div class="story-slide" id="slide-publications">
+            <div class="container"><h2>Publications</h2><div class="card-grid" style="grid-template-columns: 1fr;">
+                <a href="https://digitalcommons.unl.edu/libphilprac/5767/" target="_blank" class="card"><h3>Bibliometric Analysis of Machine Learning and Text Mining Algorithms</h3><p>This research involved a bibliometric analysis of the leukemia research area using publication data from Scopus to map collaboration and research trends.</p><span class="read-more">View Publication <i class="fas fa-arrow-right"></i></span></a>
+            </div></div>
+        </div>
+        <div class="story-slide" id="slide-contact">
+            <div class="container"><h2>Let's Connect</h2><p class="about-text">My work is at the intersection of data, AI, and user-centric design. If you're building intelligent applications or have a project in mind, I'd love to hear from you.</p><div class="header-links" style="justify-content: center; margin-top: 40px;"><a href="https://www.linkedin.com/in/rohanrajebhosale/" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a><a href="https://github.com/RohanrajeBhosale" target="_blank"><i class="fab fa-github"></i> GitHub</a><a href="rohanraje.pdf" target="_blank" class="resume-btn"><i class="fas fa-file-pdf"></i> View Resume</a></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Chat Window is now OUTSIDE the scrolling containers, fixed to the viewport -->
+<div class="chat-window" id="chat-window">
+    <div class="chat-header"><h3>ROHbot</h3><button class="chat-close-btn" id="chat-close-btn">×</button></div>
     <div class="chat-messages" id="chat-messages"></div>
     <div class="chat-suggestions" id="chat-suggestions"></div>
     <div class="chat-input-area" id="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Ask or press the mic...">
-        <button class="chat-btn" id="mic-btn"><i class="fas fa-microphone"></i></button>
-        <button class="chat-btn hidden" id="send-btn"><i class="fas fa-paper-plane"></i></button>
-        <button class="chat-btn hidden" id="stop-btn"><i class="fas fa-stop-circle"></i></button>
+        <input type="text" id="chat-input" placeholder="Ask or press the mic..."><button class="chat-btn" id="mic-btn"><i class="fas fa-microphone"></i></button><button class="chat-btn hidden" id="send-btn"><i class="fas fa-paper-plane"></i></button><button class="chat-btn hidden" id="stop-btn"><i class="fas fa-stop-circle"></i></button>
     </div>
 </div>
 
+<footer style="text-align:center; padding: 40px 20px; border-top: 1px solid var(--border-color); color: var(--subtle-text-color); font-size: 0.9rem;">
+    <p>© 2024 Rohanraje Bhosale. Your complete data and tech solution.</p>
+</footer>
+
+<!-- SCRIPTS -->
 <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const revealElements = document.querySelectorAll('.reveal');
-        const observer = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        revealElements.forEach(el => observer.observe(el));
-    });
-    window.addEventListener('load', () => {
+    document.addEventListener("DOMContentLoaded", () => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // --- 1. Static Hero Intro Animation (runs once on load) ---
+        const heroTl = gsap.timeline({delay: 0.2});
+        heroTl.from("#hero-section .header-content > *", { y: 30, opacity: 0, stagger: 0.2, duration: 0.8 })
+            .from("#hero-section .avatar-container", { scale: 0.5, opacity: 0, duration: 0.8 }, "<")
+            .from("#hero-section .avatar-prompt", { x: 50, opacity: 0, duration: 0.8 }, "-=0.5");
+
+        // --- 2. Scrollytelling Animation ---
+        const scrollyTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "#story-container", start: "top top", end: "bottom bottom",
+                scrub: 1, pin: "#story-pin-target", anticipatePin: 1
+            }
+        });
+
+        scrollyTl
+            .to("#slide-about", { autoAlpha: 1, duration: 1 })
+            .from("#slide-about .container > *", { y: 50, opacity: 0, stagger: 0.3, duration: 1}, "-=0.5")
+            .to("#slide-about", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-experience", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-experience .experience-item", { x: -100, opacity: 0, stagger: 0.3, duration: 0.8 }, "-=0.5")
+            .to("#slide-experience", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-projects", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-projects .card", { y: 100, opacity: 0, stagger: 0.2, duration: 0.8 }, "-=0.5")
+            .to("#slide-projects", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-writings", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-writings .card", { scale: 0.8, opacity: 0, stagger: 0.3, duration: 0.6 }, "-=0.5")
+            .to("#slide-writings", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-skills", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-skills .card", { scale: 0.8, opacity: 0, stagger: 0.2, duration: 0.6 }, "-=0.5")
+            .to("#slide-skills", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-education", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-education .card", { y: 100, opacity: 0, stagger: 0.3, duration: 0.8 }, "-=0.5")
+            .to("#slide-education", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-publications", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-publications .card", { scale: 0.5, opacity: 0, duration: 1 }, "-=0.5")
+            .to("#slide-publications", { autoAlpha: 0, duration: 1 }, "+=2")
+
+            .to("#slide-contact", { autoAlpha: 1, duration: 1 }, "<")
+            .from("#slide-contact .container > *", { y: 50, opacity: 0, stagger: 0.3, duration: 1}, "-=0.5");
+
+        // --- 3. tsParticles Background ---
         tsParticles.load("tsparticles", {
             fpsLimit: 60, interactivity: { events: { onHover: { enable: true, mode: "repulse" }, resize: true, }, modes: { repulse: { distance: 100, duration: 0.4 } }, },
             particles: { color: { value: "#444444" }, links: { color: "#555555", distance: 150, enable: true, opacity: 0.2, width: 1 }, collisions: { enable: true }, move: { direction: "none", enable: true, outModes: { default: "bounce" }, random: false, speed: 0.5, straight: false, }, number: { density: { enable: true, area: 800 }, value: 80 }, opacity: { value: 0.2 }, shape: { type: "circle" }, size: { value: { min: 1, max: 3 } }, },
             detectRetina: true,
         });
-    });
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const chatbotFab = document.getElementById('chatbot-fab');
+        // --- 4. FULL CHATBOT LOGIC ---
+        const avatarTrigger = document.getElementById('avatar-chat-trigger');
         const chatWindow = document.getElementById('chat-window');
         const closeBtn = document.getElementById('chat-close-btn');
         const chatInputArea = document.getElementById('chat-input-area');
@@ -480,222 +286,25 @@
         const micBtn = document.getElementById('mic-btn');
         const stopBtn = document.getElementById('stop-btn');
         const chatMessages = document.getElementById('chat-messages');
-        const floatingPrompt = document.getElementById('floating-prompt');
         const suggestionsContainer = document.getElementById('chat-suggestions');
-
-        let currentAudio = null;
-        let chatHistory = [];
-
+        let currentAudio = null; let chatHistory = [];
         const suggestionPresets = [ "Tell me about your RAG projects.", "What is your cloud experience?", "Where did you study?", "What are your core skills?" ];
-
-        function populateSuggestions() {
-            suggestionsContainer.innerHTML = '';
-            suggestionsContainer.classList.remove('hidden');
-            suggestionPresets.forEach(text => {
-                const btn = document.createElement('button');
-                btn.className = 'suggestion-btn';
-                btn.textContent = text;
-                btn.addEventListener('click', () => {
-                    chatInput.value = text;
-                    handleTyping();
-                    handleUserInput();
-                });
-                suggestionsContainer.appendChild(btn);
-            });
-        }
-
-        chatbotFab.addEventListener('click', openChat);
-        closeBtn.addEventListener('click', closeChat);
-        sendBtn.addEventListener('click', handleUserInput);
-        chatInput.addEventListener('keypress', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleUserInput(); } });
-        chatInput.addEventListener('input', handleTyping);
-        stopBtn.addEventListener('click', stopBotSpeaking);
-
-        function openChat() {
-            chatWindow.style.display = 'flex';
-            floatingPrompt.classList.add('hidden');
-            if (chatMessages.children.length === 0) {
-                const welcomeText = "Hello. I am ROHbot, a custom AI assistant for Rohan. You can ask me anything about his skills or projects. How can I help?";
-                addBotMessage(welcomeText, false);
-                speakText(welcomeText);
-                populateSuggestions();
-            }
-        }
-
-        function closeChat() {
-            stopBotSpeaking();
-            chatWindow.style.display = 'none';
-            floatingPrompt.classList.remove('hidden');
-            chatMessages.innerHTML = '';
-            suggestionsContainer.innerHTML = '';
-            chatHistory = [];
-        }
-
-        function handleTyping() {
-            if (chatInput.value.length > 0) {
-                chatInputArea.classList.add('typing');
-            } else {
-                chatInputArea.classList.remove('typing');
-            }
-        }
-
-        function handleUserInput() {
-            const userText = chatInput.value.trim();
-            if (!userText) return;
-            suggestionsContainer.classList.add('hidden');
-            addUserMessage(userText);
-            chatInput.value = '';
-            handleTyping();
-            getGeminiResponse(userText);
-        }
-
-        function getGeminiResponse(userText) {
-            const messageEl = document.createElement('div');
-            messageEl.className = 'chat-message bot';
-            chatMessages.appendChild(messageEl);
-            const cursor = document.createElement('span');
-            cursor.className = 'blinking-cursor';
-            cursor.textContent = '▋';
-            messageEl.appendChild(cursor);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            let fullReply = "";
-
-            fetch('https://rohbot.vercel.app/api/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    userInput: userText,
-                    history: chatHistory
-                }),
-            })
-                .then(response => {
-                    if (!response.ok) { throw new Error(`Network response was not ok`); }
-                    const reader = response.body.getReader();
-                    const decoder = new TextDecoder();
-
-                    function push() {
-                        reader.read().then(({ done, value }) => {
-                            if (done) {
-                                messageEl.removeChild(cursor);
-                                chatHistory.push({ role: 'model', parts: [{ text: fullReply }] });
-                                speakText(fullReply);
-                                return;
-                            }
-                            const chunkText = decoder.decode(value, { stream: true });
-                            fullReply += chunkText;
-                            cursor.insertAdjacentText('beforebegin', chunkText);
-                            chatMessages.scrollTop = chatMessages.scrollHeight;
-                            push();
-                        });
-                    }
-                    push();
-                })
-                .catch(error => {
-                    console.error('Error fetching from chat API:', error);
-                    messageEl.textContent = "I'm having a little trouble connecting to my core logic right now. Please try again in a moment.";
-                });
-        }
-
-        function addUserMessage(text) {
-            const messageEl = document.createElement('div');
-            messageEl.className = 'chat-message user';
-            messageEl.textContent = text;
-            chatMessages.appendChild(messageEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            chatHistory.push({ role: 'user', parts: [{ text }] });
-        }
-
-        function addBotMessage(text, addToHistory = true) {
-            const messageEl = document.createElement('div');
-            messageEl.className = 'chat-message bot';
-            messageEl.textContent = text;
-            chatMessages.appendChild(messageEl);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            if (addToHistory) {
-                chatHistory.push({ role: 'model', parts: [{ text }] });
-            }
-        }
-
-        function stopBotSpeaking() {
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio.src = '';
-                currentAudio = null;
-            }
-            chatInputArea.classList.remove('bot-speaking');
-        }
-
-        function speakText(text) {
-            stopBotSpeaking();
-            chatInputArea.classList.add('bot-speaking');
-
-            const backendUrl = 'https://rohbot.vercel.app/api/tts';
-            fetch(backendUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ text: text }),
-            })
-                .then(response => response.ok ? response.blob() : Promise.reject(response))
-                .then(audioBlob => {
-                    const audioUrl = URL.createObjectURL(audioBlob);
-                    currentAudio = new Audio(audioUrl);
-                    currentAudio.play();
-                    currentAudio.onended = () => {
-                        URL.revokeObjectURL(audioUrl);
-                        currentAudio = null;
-                        chatInputArea.classList.remove('bot-speaking');
-                        if (chatWindow.style.display === 'flex') {
-                            micBtn.click();
-                        }
-                    };
-                })
-                .catch(error => {
-                    console.error('Custom voice error:', error);
-                    chatInputArea.classList.remove('bot-speaking');
-                    const utterance = new SpeechSynthesisUtterance(text);
-                    utterance.lang = 'en-US';
-                    window.speechSynthesis.speak(utterance);
-                });
-        }
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        const recognition = SpeechRecognition ? new SpeechRecognition() : null;
-        if (recognition) {
-            recognition.continuous = false;
-            recognition.lang = 'en-US';
-
-            micBtn.addEventListener('click', () => {
-                stopBotSpeaking();
-                if (micBtn.classList.contains('listening')) {
-                    recognition.stop();
-                } else {
-                    try { recognition.start(); } catch (e) { console.error("Recognition start error:", e); }
-                }
-            });
-
-            recognition.onstart = () => {
-                micBtn.classList.add('listening');
-                chatInputArea.classList.add('mic-active');
-            };
-            recognition.onend = () => {
-                micBtn.classList.remove('listening');
-                chatInputArea.classList.remove('mic-active');
-            };
-            recognition.onresult = (event) => {
-                const speechResult = event.results[0][0].transcript;
-                chatInput.value = speechResult;
-                handleTyping();
-                handleUserInput();
-            };
-            recognition.onerror = (event) => {
-                console.error("Speech recognition error:", event.error);
-                micBtn.classList.remove('listening');
-                chatInputArea.classList.remove('mic-active');
-            };
-        } else {
-            micBtn.style.display = 'none';
-        }
+        function openChat() { gsap.to(chatWindow, { autoAlpha: 1, scale: 1, duration: 0.4, ease: "power2.out" }); if (chatMessages.children.length === 0) { const welcomeText = "Hello. I am ROHbot, an AI twin of Rohan. You can ask me anything about his skills or projects. How can I help?"; addBotMessage(welcomeText, false); speakText(welcomeText); populateSuggestions(); } }
+        function closeChat() { stopBotSpeaking(); gsap.to(chatWindow, { autoAlpha: 0, scale: 0.9, duration: 0.3, ease: "power2.in", onComplete: () => { chatMessages.innerHTML = ''; suggestionsContainer.innerHTML = ''; chatHistory = []; }}); }
+        avatarTrigger.addEventListener('click', openChat); closeBtn.addEventListener('click', closeChat);
+        function populateSuggestions(){suggestionsContainer.innerHTML='';suggestionsContainer.classList.remove('hidden');suggestionPresets.forEach(text=>{const btn=document.createElement('button');btn.className='suggestion-btn';btn.textContent=text;btn.addEventListener('click',()=>{chatInput.value=text;handleTyping();handleUserInput();});suggestionsContainer.appendChild(btn);})}
+        sendBtn.addEventListener('click',handleUserInput);chatInput.addEventListener('keypress',(e)=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();handleUserInput();}});chatInput.addEventListener('input',handleTyping);stopBtn.addEventListener('click',stopBotSpeaking);
+        function handleTyping(){chatInputArea.classList.toggle('typing',chatInput.value.length>0);}
+        function handleUserInput(){const userText=chatInput.value.trim();if(!userText)return;suggestionsContainer.classList.add('hidden');addUserMessage(userText);chatInput.value='';handleTyping();getGeminiResponse(userText);}
+        function getGeminiResponse(userText){const messageEl=document.createElement('div');messageEl.className='chat-message bot';chatMessages.appendChild(messageEl);const cursor=document.createElement('span');cursor.className='blinking-cursor';cursor.textContent='▋';messageEl.appendChild(cursor);chatMessages.scrollTop=chatMessages.scrollHeight;let fullReply="";fetch('https://rohbot.vercel.app/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({userInput:userText,history:chatHistory}),}).then(response=>{if(!response.ok){throw new Error(`Network response was not ok`);}const reader=response.body.getReader();const decoder=new TextDecoder();function push(){reader.read().then(({done,value})=>{if(done){messageEl.removeChild(cursor);chatHistory.push({role:'model',parts:[{text:fullReply}]});speakText(fullReply);return;}
+            const chunkText=decoder.decode(value,{stream:true});fullReply+=chunkText;cursor.insertAdjacentText('beforebegin',chunkText);chatMessages.scrollTop=chatMessages.scrollHeight;push();});}
+            push();}).catch(error=>{console.error('Error fetching from chat API:',error);messageEl.textContent="I'm having a little trouble connecting to my core logic right now. Please try again in a moment.";});}
+        function addUserMessage(text){const messageEl=document.createElement('div');messageEl.className='chat-message user';messageEl.textContent=text;chatMessages.appendChild(messageEl);chatMessages.scrollTop=chatMessages.scrollHeight;chatHistory.push({role:'user',parts:[{text}]});}
+        function addBotMessage(text,addToHistory=true){const messageEl=document.createElement('div');messageEl.className='chat-message bot';messageEl.textContent=text;chatMessages.appendChild(messageEl);chatMessages.scrollTop=chatMessages.scrollHeight;if(addToHistory){chatHistory.push({role:'model',parts:[{text}]});}}
+        function stopBotSpeaking(){if(currentAudio){currentAudio.pause();currentAudio.src='';currentAudio=null;}
+            chatInputArea.classList.remove('bot-speaking');}
+        function speakText(text){stopBotSpeaking();chatInputArea.classList.add('bot-speaking');fetch('https://rohbot.vercel.app/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:text}),}).then(response=>response.ok?response.blob():Promise.reject(response)).then(audioBlob=>{const audioUrl=URL.createObjectURL(audioBlob);currentAudio=new Audio(audioUrl);currentAudio.play();currentAudio.onended=()=>{URL.revokeObjectURL(audioUrl);currentAudio=null;chatInputArea.classList.remove('bot-speaking');if(chatWindow.style.display==='flex'){micBtn.click();}};}).catch(error=>{console.error('Custom voice error:',error);chatInputArea.classList.remove('bot-speaking');const utterance=new SpeechSynthesisUtterance(text);utterance.lang='en-US';window.speechSynthesis.speak(utterance);});}
+        const SpeechRecognition=window.SpeechRecognition||window.webkitSpeechRecognition;const recognition=SpeechRecognition?new SpeechRecognition():null;if(recognition){recognition.continuous=false;recognition.lang='en-US';micBtn.addEventListener('click',()=>{stopBotSpeaking();if(micBtn.classList.contains('listening')){recognition.stop();}else{try{recognition.start();}catch(e){console.error("Recognition start error:",e);}}});recognition.onstart=()=>{micBtn.classList.add('listening');chatInputArea.classList.add('mic-active');};recognition.onend=()=>{micBtn.classList.remove('listening');chatInputArea.classList.remove('mic-active');};recognition.onresult=(event)=>{const speechResult=event.results[0][0].transcript;chatInput.value=speechResult;handleTyping();handleUserInput();};recognition.onerror=(event)=>{console.error("Speech recognition error:",event.error);micBtn.classList.remove('listening');chatInputArea.classList.remove('mic-active');};}else{micBtn.style.display='none';}
     });
 </script>
 </body>
